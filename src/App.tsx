@@ -14,6 +14,8 @@ import ContributingGuide from './components/DocumentationPages/ContributingGuide
 import FAQ from './components/DocumentationPages/FAQ';
 import SxpModules from './components/DocumentationPages/SxpModules';
 import RealDataIntegration from './components/DocumentationPages/RealDataIntegration';
+import NetlifyDeploymentLogs from './components/NetlifyDeploymentLogs/NetlifyDeploymentLogs';
+import NetlifyDeploymentDemo from './components/NetlifyDeploymentLogs/NetlifyDeploymentDemo';
 import LandingPage from './components/LandingPage/LandingPage';
 import { AuthDemo, EnhancedSignup, EmailTest, EmailVerification, UserManagement, AuthActivity } from './modules/authentication-module';
 import DatabaseQuery from './modules/authentication-module/components/DatabaseQuery/DatabaseQuery';
@@ -120,6 +122,10 @@ function AppContent() {
               <Route 
                 path="/docs/real-data-integration" 
                 element={<RealDataIntegration />} 
+              />
+              <Route 
+                path="/netlify-deployment-logs" 
+                element={<NetlifyDeploymentDemo />} 
               />
               <Route 
                 path="/schedule" 

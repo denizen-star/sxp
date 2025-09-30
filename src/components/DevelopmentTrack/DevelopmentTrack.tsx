@@ -123,7 +123,7 @@ const DevelopmentTrack: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
   const [devActiveTab, setDevActiveTab] = useState('backlog');
   const [testActiveTab, setTestActiveTab] = useState('authentication');
-  const [useRealData, setUseRealData] = useState(false);
+  const [useRealData] = useState(true);
   
   // State for all data
   const [appStatus, setAppStatus] = useState<AppStatus>({
@@ -283,176 +283,34 @@ const DevelopmentTrack: React.FC = () => {
       
       setLastRefresh(now);
 
-      if (useRealData) {
-        // Use real data from git and actual sources
-        try {
-          const [realAppStatus, realDevStatus, realTestResults] = await Promise.all([
-            realDataService.getRealAppStatus(),
-            realDataService.getRealDevelopmentStatus(),
-            realDataService.getRealTestResults()
-          ]);
+      // Use real data from git and actual sources
+      try {
+        const [realAppStatus, realDevStatus, realTestResults] = await Promise.all([
+          realDataService.getRealAppStatus(),
+          realDataService.getRealDevelopmentStatus(),
+          realDataService.getRealTestResults()
+        ]);
 
-          // Update with real data
-          setAppStatus(realAppStatus as any);
-          setDevelopmentStatus(realDevStatus as any);
-          setTestResults(realTestResults as any);
-          
-          return; // Exit early with real data
-        } catch (error) {
-          console.warn('Failed to fetch real data, falling back to simulated data:', error);
-          // Continue with simulated data below
-        }
-      }
-
-      // Simulate API calls for simulated data
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Simulate real-time data updates
-      const randomStatus = Math.random() > 0.1; // 90% chance of being online
-      const qaStatuses = ['passed', 'failed', 'running', 'pending'];
-      const randomQAStatus = qaStatuses[Math.floor(Math.random() * qaStatuses.length)];
-      
-      // Generate detailed changes since last refresh
-      const changeTypes = [
-        {
-          title: 'Enhanced Authentication Module',
-          description: '🔧 What Was Fixed: Resolved token expiration issues and improved session management\n✨ What Was Added: Multi-factor authentication support and enhanced security protocols\n📈 Enhanced Development Status: Authentication flow now 95% complete with improved error handling\n🧪 Dynamic Testing Results: All auth tests passing with 100% coverage\n🔧 Technical Changes: Updated JWT implementation, added refresh token rotation\n🎯 Impact: Significantly improved security and user experience'
-        },
-        {
-          title: 'Fixed TypeScript Compilation Errors',
-          description: '🔧 What Was Fixed: Resolved 15+ TypeScript errors across components and services\n✨ What Was Added: Strict type checking and improved type definitions\n📈 Enhanced Development Status: Build process now 100% error-free\n🧪 Dynamic Testing Results: All type checks passing with zero warnings\n🔧 Technical Changes: Updated interfaces, added proper type guards\n🎯 Impact: Improved code quality and developer experience'
-        },
-        {
-          title: 'Added New User Management Features',
-          description: '🔧 What Was Fixed: Resolved user role assignment inconsistencies\n✨ What Was Added: Advanced user permissions, bulk user operations, audit logging\n📈 Enhanced Development Status: User management module 80% complete\n🧪 Dynamic Testing Results: User CRUD operations 100% tested\n🔧 Technical Changes: New user service, permission middleware, audit trails\n🎯 Impact: Streamlined user administration and improved security'
-        },
-        {
-          title: 'Improved Database Performance',
-          description: '🔧 What Was Fixed: Resolved slow query issues and connection timeouts\n✨ What Was Added: Query optimization, connection pooling, caching layer\n📈 Enhanced Development Status: Database operations 3x faster\n🧪 Dynamic Testing Results: All queries under 100ms response time\n🔧 Technical Changes: Added indexes, optimized queries, Redis caching\n🎯 Impact: Dramatically improved application performance'
-        },
-        {
-          title: 'Enhanced UI Components',
-          description: '🔧 What Was Fixed: Resolved accessibility issues and responsive design bugs\n✨ What Was Added: New design system components, improved animations\n📈 Enhanced Development Status: UI library 90% complete with full accessibility\n🧪 Dynamic Testing Results: All components pass accessibility audits\n🔧 Technical Changes: Updated Material-UI, added custom components\n🎯 Impact: Better user experience and accessibility compliance'
-        },
-        {
-          title: 'Resolved Merge Conflicts',
-          description: '🔧 What Was Fixed: Resolved 8 merge conflicts in authentication and UI modules\n✨ What Was Added: Improved conflict resolution process and documentation\n📈 Enhanced Development Status: Clean merge history with proper branching\n🧪 Dynamic Testing Results: All merged code passes integration tests\n🔧 Technical Changes: Updated git workflow, added conflict resolution guides\n🎯 Impact: Smoother development workflow and reduced merge issues'
-        },
-        {
-          title: 'Updated Dependencies',
-          description: '🔧 What Was Fixed: Resolved security vulnerabilities in outdated packages\n✨ What Was Added: Latest stable versions of all major dependencies\n📈 Enhanced Development Status: All dependencies up-to-date and secure\n🧪 Dynamic Testing Results: No breaking changes detected\n🔧 Technical Changes: Updated package.json, resolved version conflicts\n🎯 Impact: Improved security and access to latest features'
-        },
-        {
-          title: 'Fixed Memory Leaks',
-          description: '🔧 What Was Fixed: Resolved memory leaks in authentication and data processing modules\n✨ What Was Added: Memory monitoring and automatic cleanup processes\n📈 Enhanced Development Status: Memory usage reduced by 40%\n🧪 Dynamic Testing Results: No memory leaks detected in stress tests\n🔧 Technical Changes: Added cleanup hooks, improved garbage collection\n🎯 Impact: Better application stability and performance'
-        },
-        {
-          title: 'Optimized API Responses',
-          description: '🔧 What Was Fixed: Resolved slow API response times and timeout issues\n✨ What Was Added: Response caching, compression, and pagination\n📈 Enhanced Development Status: API response times improved by 60%\n🧪 Dynamic Testing Results: All endpoints meet performance benchmarks\n🔧 Technical Changes: Added Redis caching, gzip compression, query optimization\n🎯 Impact: Significantly improved API performance and user experience'
-        },
-        {
-          title: 'Added Error Handling',
-          description: '🔧 What Was Fixed: Resolved unhandled exceptions and improved error reporting\n✨ What Was Added: Comprehensive error boundaries and logging system\n📈 Enhanced Development Status: Error handling coverage at 95%\n🧪 Dynamic Testing Results: All error scenarios properly handled\n🔧 Technical Changes: Added error boundaries, centralized logging, monitoring\n🎯 Impact: Improved application reliability and debugging capabilities'
-        }
-      ];
-      
-      const numChanges = Math.floor(Math.random() * 5) + 1; // 1-5 changes
-      const randomChanges = Array.from({ length: numChanges }, () => 
-        changeTypes[Math.floor(Math.random() * changeTypes.length)]
-      );
-      
-      // Update app status with current data
-      setAppStatus(prev => ({
-        online: randomStatus,
-        lastQATest: {
-          status: randomQAStatus as 'passed' | 'failed' | 'running' | 'pending',
-          timestamp: now,
-          details: randomQAStatus === 'passed' ? 'All tests passed successfully' : 
-                   randomQAStatus === 'failed' ? 'Some tests failed - check logs' :
-                   randomQAStatus === 'running' ? 'Tests currently in progress' :
-                   'Tests pending execution'
-        },
-        lastRelease: {
-          gitStatus: randomStatus ? 'Deployed to main' : 'Deployment failed',
-          netlifyStatus: randomStatus ? 'Live on production' : 'Build failed',
-          timestamp: now
-        },
-        changes: randomChanges,
-        moduleIntegration: {
-          'authentication': { 
-            status: Math.random() > 0.2 ? 'integrated' : 'pending', 
-            progress: Math.floor(Math.random() * 40) + 60 
-          },
-          'persona': { 
-            status: Math.random() > 0.3 ? 'integrated' : 'pending', 
-            progress: Math.floor(Math.random() * 30) + 70 
-          },
-          'schedule': { 
-            status: Math.random() > 0.4 ? 'integrated' : 'pending', 
-            progress: Math.floor(Math.random() * 50) + 50 
-          }
-        }
-      }));
-      
-      // Generate new commit with detailed information
-      const commitPurposes = [
-        '🔧 What Was Fixed: Resolved critical bugs and performance issues\n✨ What Was Added: New features and enhanced functionality\n📈 Enhanced Development Status: Improved overall system stability\n🧪 Dynamic Testing Results: All tests passing with improved coverage\n🔧 Technical Changes: Updated core systems and dependencies\n🎯 Impact: Significantly improved user experience and system reliability',
-        '🔧 What Was Fixed: Resolved security vulnerabilities and authentication issues\n✨ What Was Added: Enhanced security protocols and user management\n📈 Enhanced Development Status: Security compliance now at 100%\n🧪 Dynamic Testing Results: All security tests passing\n🔧 Technical Changes: Updated authentication system, added encryption\n🎯 Impact: Improved security posture and user trust',
-        '🔧 What Was Fixed: Resolved UI/UX inconsistencies and accessibility issues\n✨ What Was Added: Improved design system and responsive layouts\n📈 Enhanced Development Status: UI components now fully accessible\n🧪 Dynamic Testing Results: All accessibility tests passing\n🔧 Technical Changes: Updated design system, improved responsive design\n🎯 Impact: Better user experience across all devices'
-      ];
-      
-      const randomCommitPurpose = commitPurposes[Math.floor(Math.random() * commitPurposes.length)];
-      const commitId = Math.random().toString(36).substring(2, 8);
-      
-      // Update development status with current data
-      setDevelopmentStatus(prev => ({
-        ...prev,
-        commits: [
-          {
-            title: `Development Update - ${now.split(' ')[0]}`,
-            details: `Latest changes: ${randomChanges.slice(0, 2).map(c => c.title).join(', ')}`,
-            timestamp: now,
-            commitId: commitId,
-            purpose: randomCommitPurpose
-          },
-          ...prev.commits.slice(0, 9) // Keep last 9 commits
-        ]
-      }));
-      
-      // Update test results with current data
-      const testStatuses = ['passed', 'failed', 'running', 'pending'];
-      const testResultsMessages = {
-        'passed': ['All tests passed successfully', 'No issues detected', 'All functionality working'],
-        'failed': ['Some tests failed', 'Critical issues detected', 'Functionality broken'],
-        'running': ['Tests currently running', 'Test suite in progress', 'Executing test cases'],
-        'pending': ['Tests queued for execution', 'Waiting for test run', 'Tests scheduled']
-      };
-      
-      const recommendations = [
-        'Fix cascade deletion',
-        'Add confirmation dialogs', 
-        'Update error handling',
-        'Improve performance',
-        'Add input validation',
-        'Fix memory leaks',
-        'Update documentation',
-        'Add unit tests'
-      ];
-      
-      setTestResults(prev => prev.map(test => {
-        const newStatus = testStatuses[Math.floor(Math.random() * testStatuses.length)] as 'passed' | 'failed' | 'running' | 'pending';
-        const messageOptions = testResultsMessages[newStatus];
-        const randomMessage = messageOptions[Math.floor(Math.random() * messageOptions.length)];
+        // Update with real data
+        setAppStatus(realAppStatus as any);
+        setDevelopmentStatus(realDevStatus as any);
+        setTestResults(realTestResults as any);
         
-        return {
-          ...test,
-          status: newStatus,
-          lastRun: now,
-          results: randomMessage,
-          recommendations: newStatus === 'failed' ? 
-            recommendations.slice(0, Math.floor(Math.random() * 3) + 1) : []
-        };
-      }));
+        return; // Exit with real data
+      } catch (error) {
+        console.error('Failed to fetch real data:', error);
+        // Show error message to user
+        setAppStatus(prev => ({
+          ...prev,
+          online: false,
+          lastQATest: {
+            status: 'failed',
+            timestamp: now,
+            details: 'Failed to fetch real data from repository'
+          }
+        }));
+        return;
+      }
       
     } catch (error) {
       console.error('Failed to refresh data:', error);
@@ -568,28 +426,15 @@ const DevelopmentTrack: React.FC = () => {
         <Typography variant="h4" sx={{ color: colors.text.primary, fontWeight: 600 }}>
           Development Track
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Button
-            variant={useRealData ? 'contained' : 'outlined'}
-            onClick={() => setUseRealData(!useRealData)}
-            sx={{ 
-              ...(useRealData ? helpers.getButtonStyles() : {}),
-              minWidth: 'auto',
-              px: 2
-            }}
-          >
-            {useRealData ? '📊 Real Data' : '🎭 Simulated Data'}
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={loading ? <CircularProgress size={16} /> : <Refresh />}
-            onClick={refreshAllData}
-            disabled={loading}
-            sx={{ ...helpers.getButtonStyles() }}
-          >
-            {loading ? 'Refreshing...' : 'Refresh All'}
-          </Button>
-        </Box>
+        <Button
+          variant="contained"
+          startIcon={loading ? <CircularProgress size={16} /> : <Refresh />}
+          onClick={refreshAllData}
+          disabled={loading}
+          sx={{ ...helpers.getButtonStyles() }}
+        >
+          {loading ? 'Refreshing...' : 'Refresh All'}
+        </Button>
       </Box>
 
       {lastRefresh && (

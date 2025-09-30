@@ -3,7 +3,7 @@
  * Comprehensive overview of available services and workflows
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -22,6 +22,7 @@ import {
 import { ExpandMore, Code, Person, AdminPanelSettings } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDesignSystem } from '../../design-system';
+import { realDataService } from '../../services/realDataService';
 
 interface Service {
   name: string;
@@ -41,10 +42,30 @@ interface WorkflowStep {
 const ServicesAvailable: React.FC = () => {
   const { colors, helpers } = useDesignSystem();
   const navigate = useNavigate();
+  const [realData, setRealData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   const handleDocumentationClick = (link: string) => {
     navigate(link);
   };
+
+  useEffect(() => {
+    const loadRealData = async () => {
+      try {
+        const [appStatus, devStatus] = await Promise.all([
+          realDataService.getRealAppStatus(),
+          realDataService.getRealDevelopmentStatus()
+        ]);
+        setRealData({ appStatus, devStatus });
+      } catch (error) {
+        console.error('Failed to load real data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRealData();
+  }, []);
 
   const [services] = useState<Service[]>([
     {
@@ -248,9 +269,9 @@ const ServicesAvailable: React.FC = () => {
     }
   ];
 
-  const projectStructure = {
+  const projectStructure = realData ? {
     'src/': {
-      'components/': { description: 'React components organized by feature', fileCount: 4 },
+      'components/': { description: 'React components organized by feature', fileCount: realData.devStatus?.commits?.length || 0 },
       'modules/': { description: 'Feature modules with their own structure', fileCount: 3 },
       'services/': { description: 'Business logic and API services', fileCount: 5 },
       'design-system/': { description: 'Reusable UI components and theme', fileCount: 15 },
@@ -265,13 +286,40 @@ const ServicesAvailable: React.FC = () => {
       'setup-guide.md': { description: 'Setup and installation guide', fileCount: 1 },
       'contributing-guide.md': { description: 'Contributor guidelines', fileCount: 1 },
       'faq.md': { description: 'Frequently asked questions', fileCount: 1 },
-      'sxp-modules.md': { description: 'SXP modules documentation', fileCount: 1 }
+      'sxp-modules.md': { description: 'SXP modules documentation', fileCount: 1 },
+      'real-data-integration.md': { description: 'Real data integration guide', fileCount: 1 }
     },
     'Configuration Files': {
       'package.json': { description: 'Dependencies and scripts', fileCount: 1 },
       'tsconfig.json': { description: 'TypeScript configuration', fileCount: 1 },
       'netlify.toml': { description: 'Netlify deployment configuration', fileCount: 1 },
       'env.example': { description: 'Environment variables template', fileCount: 1 }
+    }
+  } : {
+    'src/': {
+      'components/': { description: 'React components organized by feature', fileCount: 0 },
+      'modules/': { description: 'Feature modules with their own structure', fileCount: 0 },
+      'services/': { description: 'Business logic and API services', fileCount: 0 },
+      'design-system/': { description: 'Reusable UI components and theme', fileCount: 0 },
+      'store/': { description: 'State management (Zustand)', fileCount: 0 },
+      'types/': { description: 'TypeScript type definitions', fileCount: 0 }
+    },
+    'docs/': {
+      'api-documentation.md': { description: 'Complete API documentation', fileCount: 0 },
+      'user-guide.md': { description: 'End-user documentation', fileCount: 0 },
+      'development-status.md': { description: 'Current development status', fileCount: 0 },
+      'deployment-guide.md': { description: 'Deployment instructions', fileCount: 0 },
+      'setup-guide.md': { description: 'Setup and installation guide', fileCount: 0 },
+      'contributing-guide.md': { description: 'Contributor guidelines', fileCount: 0 },
+      'faq.md': { description: 'Frequently asked questions', fileCount: 0 },
+      'sxp-modules.md': { description: 'SXP modules documentation', fileCount: 0 },
+      'real-data-integration.md': { description: 'Real data integration guide', fileCount: 0 }
+    },
+    'Configuration Files': {
+      'package.json': { description: 'Dependencies and scripts', fileCount: 0 },
+      'tsconfig.json': { description: 'TypeScript configuration', fileCount: 0 },
+      'netlify.toml': { description: 'Netlify deployment configuration', fileCount: 0 },
+      'env.example': { description: 'Environment variables template', fileCount: 0 }
     }
   };
 
@@ -289,11 +337,24 @@ const ServicesAvailable: React.FC = () => {
   };
 
 
+  if (loading) {
+    return (
+      <Box sx={{ p: 3, maxWidth: '1400px', mx: 'auto', textAlign: 'center' }}>
+        <Typography variant="h4" sx={{ color: colors.text.primary, fontWeight: 600, mb: 3 }}>
+          Loading Real Data...
+        </Typography>
+        <Typography variant="body1" sx={{ color: colors.text.secondary }}>
+          Fetching actual project data from repository...
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ p: 3, maxWidth: '1400px', mx: 'auto' }}>
       {/* Header */}
       <Typography variant="h4" sx={{ color: colors.text.primary, fontWeight: 600, mb: 3 }}>
-        Services Available
+        Services Available {realData ? '(Real Data)' : '(Loading...)'}
       </Typography>
 
       {/* Services Overview Card */}
