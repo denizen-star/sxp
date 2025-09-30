@@ -962,32 +962,41 @@ const DevelopmentTrack: React.FC = () => {
             {devActiveTab === 'commits' && (
               <Box>
                 {developmentStatus.commits.map((commit, index) => (
-                  <Paper key={index} sx={{ p: 2, mb: 2, backgroundColor: colors.background.light }}>
-                    <Typography variant="subtitle2" sx={{ mb: 1, color: colors.text.primary, fontWeight: 600 }}>
-                      {commit.title}
-                    </Typography>
-                    <Typography variant="body2" sx={{ mb: 1, color: colors.text.secondary, fontSize: '12px' }}>
+                  <Paper key={index} sx={{ p: 3, mb: 3, backgroundColor: colors.background.light, borderRadius: 2, boxShadow: 1 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                      <Typography variant="h6" sx={{ color: colors.text.primary, fontWeight: 600, flex: 1 }}>
+                        {commit.title}
+                      </Typography>
+                      <Typography variant="caption" sx={{ color: colors.text.secondary, ml: 2, whiteSpace: 'nowrap' }}>
+                        {commit.commitId}
+                      </Typography>
+                    </Box>
+                    
+                    <Typography variant="body2" sx={{ mb: 2, color: colors.text.secondary, fontSize: '13px', lineHeight: 1.4 }}>
                       {commit.details}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: colors.text.secondary, display: 'block', mb: 1 }}>
-                      <strong>Timestamp:</strong> {commit.timestamp}
-                    </Typography>
-                    <Typography variant="caption" sx={{ color: colors.text.secondary, display: 'block', mb: 1 }}>
-                      <strong>Commit ID:</strong> {commit.commitId}
-                    </Typography>
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
-                        fontSize: '11px', 
-                        color: colors.text.secondary,
-                        whiteSpace: 'pre-line',
-                        lineHeight: 1.4,
-                        mt: 1
-                      }}
-                    >
-                      🎯 <strong>Purpose:</strong><br />
-                      {commit.purpose}
-                    </Typography>
+                    
+                    <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                      <Typography variant="caption" sx={{ color: colors.text.secondary }}>
+                        <strong>Timestamp:</strong> {commit.timestamp}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ mt: 2, p: 2, backgroundColor: colors.background.paper, borderRadius: 1, border: `1px solid ${colors.text.secondary}` }}>
+                      <Typography variant="subtitle2" sx={{ color: colors.text.primary, fontWeight: 600, mb: 1 }}>
+                        Purpose
+                      </Typography>
+                      <Typography 
+                        variant="body2" 
+                        sx={{ 
+                          fontSize: '12px', 
+                          color: colors.text.secondary,
+                          whiteSpace: 'pre-line',
+                          lineHeight: 1.5
+                        }}
+                      >
+                        {commit.purpose}
+                      </Typography>
+                    </Box>
                   </Paper>
                 ))}
               </Box>
