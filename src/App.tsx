@@ -22,8 +22,6 @@ function AppContent() {
     isLoading,
     setSelectedPersona,
     loadPersonas,
-    generateSchedule,
-    exportSchedule,
   } = useStore();
 
   useEffect(() => {

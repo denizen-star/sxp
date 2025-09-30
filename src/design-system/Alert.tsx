@@ -119,7 +119,7 @@ export const Notification: React.FC<NotificationProps> = ({
   onClose,
   position = { vertical: 'top', horizontal: 'right' }
 }) => {
-  const { colors, typography } = useDesignSystem();
+  const { typography } = useDesignSystem();
 
   return (
     <Snackbar
