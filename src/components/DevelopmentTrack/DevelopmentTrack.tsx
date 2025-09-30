@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import { Refresh, CheckCircle, Error, Warning, Info, ArrowUpward, ArrowDownward, Star, StarBorder } from '@mui/icons-material';
 import { useDesignSystem } from '../../design-system';
+import { realDataService, RealAppStatus, RealDevelopmentStatus, RealTestResult } from '../../services/realDataService';
 
 interface AppStatus {
   online: boolean;
@@ -122,6 +123,7 @@ const DevelopmentTrack: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
   const [devActiveTab, setDevActiveTab] = useState('backlog');
   const [testActiveTab, setTestActiveTab] = useState('authentication');
+  const [useRealData, setUseRealData] = useState(false);
   
   // State for all data
   const [appStatus, setAppStatus] = useState<AppStatus>({
@@ -268,9 +270,6 @@ const DevelopmentTrack: React.FC = () => {
   const refreshAllData = async () => {
     setLoading(true);
     try {
-      // Simulate API calls
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       // Update timestamps
       const now = new Date().toLocaleString('en-US', {
         timeZone: 'America/New_York',
@@ -283,6 +282,30 @@ const DevelopmentTrack: React.FC = () => {
       });
       
       setLastRefresh(now);
+
+      if (useRealData) {
+        // Use real data from git and actual sources
+        try {
+          const [realAppStatus, realDevStatus, realTestResults] = await Promise.all([
+            realDataService.getRealAppStatus(),
+            realDataService.getRealDevelopmentStatus(),
+            realDataService.getRealTestResults()
+          ]);
+
+          // Update with real data
+          setAppStatus(realAppStatus as any);
+          setDevelopmentStatus(realDevStatus as any);
+          setTestResults(realTestResults as any);
+          
+          return; // Exit early with real data
+        } catch (error) {
+          console.warn('Failed to fetch real data, falling back to simulated data:', error);
+          // Continue with simulated data below
+        }
+      }
+
+      // Simulate API calls for simulated data
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Simulate real-time data updates
       const randomStatus = Math.random() > 0.1; // 90% chance of being online
@@ -545,15 +568,28 @@ const DevelopmentTrack: React.FC = () => {
         <Typography variant="h4" sx={{ color: colors.text.primary, fontWeight: 600 }}>
           Development Track
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<Refresh />}
-          onClick={refreshAllData}
-          disabled={loading}
-          sx={{ ...helpers.getButtonStyles() }}
-        >
-          {loading ? 'Refreshing...' : 'Refresh All'}
-        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Button
+            variant={useRealData ? 'contained' : 'outlined'}
+            onClick={() => setUseRealData(!useRealData)}
+            sx={{ 
+              ...(useRealData ? helpers.getButtonStyles() : {}),
+              minWidth: 'auto',
+              px: 2
+            }}
+          >
+            {useRealData ? '📊 Real Data' : '🎭 Simulated Data'}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={loading ? <CircularProgress size={16} /> : <Refresh />}
+            onClick={refreshAllData}
+            disabled={loading}
+            sx={{ ...helpers.getButtonStyles() }}
+          >
+            {loading ? 'Refreshing...' : 'Refresh All'}
+          </Button>
+        </Box>
       </Box>
 
       {lastRefresh && (
