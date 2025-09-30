@@ -431,7 +431,7 @@ class RealDataService {
 
   private getActualGitCommits() {
     // Real git commit data from your repository with dynamic timestamp conversion
-    const baseTime = new Date('2025-09-30T22:51:26Z'); // Base time in UTC (git format)
+    const baseTime = new Date('2025-09-30T19:51:26Z'); // Base time in UTC (git format) - converts to 15:51 EDT
     const commits = [
       {
         hash: '3408ae451efaa5f2f0c7878f5a619e25f502cdb6',
