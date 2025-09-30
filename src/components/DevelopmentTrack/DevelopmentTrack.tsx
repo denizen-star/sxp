@@ -3,7 +3,7 @@
  * Simplified development dashboard with real-time status monitoring
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Typography,
@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import { Refresh, CheckCircle, Error, Warning, Info, ArrowUpward, ArrowDownward, Star, StarBorder } from '@mui/icons-material';
 import { useDesignSystem } from '../../design-system';
-import { realDataService, RealAppStatus, RealDevelopmentStatus, RealTestResult } from '../../services/realDataService';
+import { realDataService } from '../../services/realDataService';
 
 interface AppStatus {
   online: boolean;
@@ -267,7 +267,7 @@ const DevelopmentTrack: React.FC = () => {
     }
   ]);
 
-  const refreshAllData = async () => {
+  const refreshAllData = useCallback(async () => {
     setLoading(true);
     try {
       // Update timestamps
@@ -459,11 +459,11 @@ const DevelopmentTrack: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [useRealData]);
 
   useEffect(() => {
     refreshAllData();
-  }, []);
+  }, [refreshAllData]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
