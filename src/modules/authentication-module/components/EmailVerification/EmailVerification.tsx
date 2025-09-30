@@ -124,7 +124,7 @@ const EmailVerification: React.FC = () => {
             Email Verified Successfully!
           </Typography>
           <Typography variant="body1" paragraph>
-            Your email address has been verified. You can now access all features of Optimizer.
+            Your email address has been verified. You can now access all features of SXP.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', mt: 3 }}>
             <Button
@@ -132,7 +132,7 @@ const EmailVerification: React.FC = () => {
               onClick={() => navigate('/')}
               size="large"
             >
-              Continue to Optimizer
+              Continue to SXP
             </Button>
           </Box>
         </Paper>

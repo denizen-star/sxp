@@ -122,7 +122,7 @@ const DropdownMenu: React.FC = () => {
             }}
             onClick={() => navigate('/auth-demo')}
           >
-            Optimizer
+            SXP
           </Typography>
         </Box>
 

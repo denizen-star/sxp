@@ -593,7 +593,7 @@ const ModernDropdownMenu: React.FC = () => {
               letterSpacing: '0.5px'
             }}
           >
-            Optimizer
+            SXP
           </Typography>
         </Box>
 

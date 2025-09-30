@@ -20,7 +20,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { ValidationUtils } from '../../utils/validationUtils';
 
 const AuthDemo: React.FC = () => {
-  const [email, setEmail] = useState('demo@optimizer.com');
+  const [email, setEmail] = useState('demo@sxp.kervinapps.com');
   const [password, setPassword] = useState('Demo123!');
   const [name, setName] = useState('Demo User');
   const [message, setMessage] = useState('');
@@ -100,7 +100,7 @@ const AuthDemo: React.FC = () => {
       acceptTerms: true 
     });
     if (success) {
-      showMessage('Signup successful! Welcome to Optimizer.', 'success');
+      showMessage('Signup successful! Welcome to SXP.', 'success');
     } else {
       showMessage('Signup failed. Please try again.', 'error');
     }

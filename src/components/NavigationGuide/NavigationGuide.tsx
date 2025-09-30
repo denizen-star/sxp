@@ -430,7 +430,7 @@ const NavigationGuide: React.FC = () => {
     <Box sx={{ p: 3 }}>
       {/* Header */}
       <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ fontSize: '15px', fontWeight: 'normal' }}>
-        Optimizer Development Hub
+        SXP Development Hub
       </Typography>
       <Typography variant="subtitle1" align="center" color="text.secondary" gutterBottom sx={{ fontSize: '12px' }}>
         Central Hub for Development Progress, Testing, and Module Functionality
@@ -2449,7 +2449,7 @@ const NavigationGuide: React.FC = () => {
                 }
               }}
             >
-              Back to Optimizer App
+              Back to SXP App
             </Button>
           </Box>
         </CardContent>
@@ -2574,7 +2574,7 @@ const NavigationGuide: React.FC = () => {
                   Proper Landing Page
                 </Typography>
                 <Typography variant="body2" sx={{ fontSize: '10px', color: colors.text.secondary, mb: 1 }}>
-                  Build a comprehensive landing page for the Optimizer application
+                  Build a comprehensive landing page for the SXP application
                 </Typography>
                 <Typography variant="body2" sx={{ fontSize: '10px', color: colors.text.secondary, mb: 1 }}>
                   Include features showcase, benefits, and user testimonials
@@ -2758,7 +2758,7 @@ const NavigationGuide: React.FC = () => {
               🎨 DESIGN SYSTEM: Centralized design system with theme, hooks, and provider, DropdownMenu component with 4 categories, Standardized typography (Plus Jakarta Sans), Consistent color palette with soft blues, Reusable component architecture
             </Typography>
             <Typography variant="body2" sx={{ fontSize: '10px', color: colors.text.secondary, mt: 1 }}>
-              🔧 TECHNICAL IMPROVEMENTS: TypeScript errors fixed, Optimizer logo now links to auth page, Standardized page titles and subtitles across all pages, Break lines after subtitles, Removed icons from titles and buttons, Consistent navigation across all pages
+              🔧 TECHNICAL IMPROVEMENTS: TypeScript errors fixed, SXP logo now links to auth page, Standardized page titles and subtitles across all pages, Break lines after subtitles, Removed icons from titles and buttons, Consistent navigation across all pages
             </Typography>
           </Paper>
 
@@ -2942,7 +2942,7 @@ const NavigationGuide: React.FC = () => {
           Development Hub - Always up-to-date with progress, testing, and functionality status
         </Typography>
         <Typography variant="body2" sx={{ fontSize: '10px', color: colors.text.secondary, mt: 1 }}>
-          Optimizer Development Hub - Updated before every commit - always current
+          SXP Development Hub - Updated before every commit - always current
         </Typography>
         <Typography variant="body2" sx={{ fontSize: '10px', color: colors.text.secondary, mt: 1 }}>
           Version 1.0.1 | Last Updated: December 19, 2024 - 18:50

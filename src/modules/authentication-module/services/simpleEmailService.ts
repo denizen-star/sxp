@@ -115,10 +115,10 @@ export class SimpleEmailService {
             <p>If the button doesn't work, you can also copy and paste this link into your browser:</p>
             <p style="word-break: break-all; background: #eee; padding: 10px; border-radius: 5px;">{{verificationUrl}}</p>
             <p><strong>This link will expire in 24 hours for security reasons.</strong></p>
-            <p>If you didn't create an account with Optimizer, you can safely ignore this email.</p>
+            <p>If you didn't create an account with SXP, you can safely ignore this email.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Optimizer. All rights reserved.</p>
+            <p>© 2024 SXP. All rights reserved.</p>
             <p>This email was sent to {{email}}</p>
           </div>
         </div>
@@ -131,19 +131,19 @@ export class SimpleEmailService {
     return `
 Hi {{name}}!
 
-Welcome to Optimizer! We're excited to help you optimize your daily routine and achieve better work-life balance.
+Welcome to SXP! We're excited to help you transform your professional networking and build meaningful relationships.
 
 To get started, please verify your email address by visiting this link:
 {{verificationUrl}}
 
 This link will expire in 24 hours for security reasons.
 
-If you didn't create an account with Optimizer, you can safely ignore this email.
+If you didn't create an account with SXP, you can safely ignore this email.
 
 Best regards,
-The Optimizer Team
+The SXP Team
 
-© 2024 Optimizer. All rights reserved.
+© 2024 SXP. All rights reserved.
     `;
   }
 
@@ -154,7 +154,7 @@ The Optimizer Team
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Reset Your Password - Optimizer</title>
+        <title>Reset Your Password - SXP</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -167,12 +167,12 @@ The Optimizer Team
       <body>
         <div class="container">
           <div class="header">
-            <h1>🔒 Optimizer</h1>
+            <h1>🔒 SXP</h1>
             <p>Password Reset Request</p>
           </div>
           <div class="content">
             <h2>Hi {{name}}!</h2>
-            <p>We received a request to reset your password for your Optimizer account.</p>
+            <p>We received a request to reset your password for your SXP account.</p>
             <p>To reset your password, click the button below:</p>
             <div style="text-align: center;">
               <a href="{{resetUrl}}" class="button">Reset Password</a>
@@ -183,7 +183,7 @@ The Optimizer Team
             <p>If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Optimizer. All rights reserved.</p>
+            <p>© 2024 SXP. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -195,7 +195,7 @@ The Optimizer Team
     return `
 Hi {{name}}!
 
-We received a request to reset your password for your Optimizer account.
+We received a request to reset your password for your SXP account.
 
 To reset your password, visit this link:
 {{resetUrl}}
@@ -205,9 +205,9 @@ This link will expire in 1 hour for security reasons.
 If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
 
 Best regards,
-The Optimizer Team
+The SXP Team
 
-© 2024 Optimizer. All rights reserved.
+© 2024 SXP. All rights reserved.
     `;
   }
 
@@ -218,7 +218,7 @@ The Optimizer Team
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to Optimizer!</title>
+        <title>Welcome to SXP!</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -231,12 +231,12 @@ The Optimizer Team
       <body>
         <div class="container">
           <div class="header">
-            <h1>🎉 Welcome to Optimizer!</h1>
+            <h1>🎉 Welcome to SXP!</h1>
             <p>Your journey to better time management starts now</p>
           </div>
           <div class="content">
             <h2>Hi {{name}}!</h2>
-            <p>Congratulations! Your email has been verified and your Optimizer account is now active.</p>
+            <p>Congratulations! Your email has been verified and your SXP account is now active.</p>
             <p>Here's what you can do next:</p>
             <ul>
               <li>🎯 <strong>Select Your Persona:</strong> Choose from different life phases and goals</li>
@@ -245,12 +245,12 @@ The Optimizer Team
               <li>📊 <strong>Track Progress:</strong> Monitor your time usage and improvements</li>
             </ul>
             <div style="text-align: center;">
-              <a href="{{baseUrl}}" class="button">Start Using Optimizer</a>
+              <a href="{{baseUrl}}" class="button">Start Using SXP</a>
             </div>
             <p>If you have any questions or need help getting started, don't hesitate to reach out to our support team.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Optimizer. All rights reserved.</p>
+            <p>© 2024 SXP. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -262,7 +262,7 @@ The Optimizer Team
     return `
 Hi {{name}}!
 
-Congratulations! Your email has been verified and your Optimizer account is now active.
+Congratulations! Your email has been verified and your SXP account is now active.
 
 Here's what you can do next:
 • Select Your Persona: Choose from different life phases and goals
@@ -275,9 +275,9 @@ Get started: {{baseUrl}}
 If you have any questions or need help getting started, don't hesitate to reach out to our support team.
 
 Best regards,
-The Optimizer Team
+The SXP Team
 
-© 2024 Optimizer. All rights reserved.
+© 2024 SXP. All rights reserved.
     `;
   }
 }

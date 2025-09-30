@@ -211,7 +211,7 @@ const EnhancedSignup: React.FC = () => {
       }} />
       
       <Typography variant="body1" color="text.secondary" align="center" paragraph>
-        Join Optimizer and start optimizing your daily routine
+        Join SXP and start transforming your professional networking
       </Typography>
 
       <Stepper activeStep={activeStep} orientation="vertical">
