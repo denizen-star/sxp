@@ -182,11 +182,11 @@ const NetlifyDeploymentLogs: React.FC<NetlifyDeploymentLogsProps> = ({
   const getStageColor = (status: DeploymentStage['status']) => {
     switch (status) {
       case 'completed':
-        return colors.success.main;
+        return colors.status.success;
       case 'failed':
-        return colors.error.main;
+        return colors.status.error;
       case 'running':
-        return colors.primary.main;
+        return colors.accent.blue;
       case 'pending':
         return colors.text.secondary;
       default:
@@ -319,9 +319,9 @@ const NetlifyDeploymentLogs: React.FC<NetlifyDeploymentLogsProps> = ({
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               sx={{
-                backgroundColor: expandedStage === stage.id ? colors.background.secondary : 'transparent',
+                backgroundColor: expandedStage === stage.id ? colors.background.light : 'transparent',
                 '&:hover': {
-                  backgroundColor: colors.background.secondary
+                  backgroundColor: colors.background.light
                 }
               }}
             >

@@ -250,7 +250,7 @@ const NetlifyDeploymentDemo: React.FC = () => {
             Code Example:
           </Typography>
           
-          <Paper sx={{ p: 2, backgroundColor: colors.background.secondary, fontFamily: 'monospace' }}>
+          <Paper sx={{ p: 2, backgroundColor: colors.background.light, fontFamily: 'monospace' }}>
             <pre>{`// Initialize the service
 netlifyDeploymentService.initialize({
   accessToken: 'your-netlify-token',
