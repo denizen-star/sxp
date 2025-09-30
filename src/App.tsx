@@ -34,15 +34,6 @@ function AppContent() {
     setSelectedPersona(persona);
   };
 
-  const handleExportSchedule = async () => {
-    try {
-      await generateSchedule();
-      const filename = await exportSchedule();
-      console.log('Schedule exported:', filename);
-    } catch (error) {
-      console.error('Failed to export schedule:', error);
-    }
-  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>

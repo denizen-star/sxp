@@ -3,8 +3,7 @@ import {
   Breadcrumbs as MuiBreadcrumbs,
   Link,
   Typography,
-  Box,
-  IconButton
+  Box
 } from '@mui/material';
 import { NavigateNext as NavigateNextIcon, Home as HomeIcon } from '@mui/icons-material';
 import { useDesignSystem } from './hooks';

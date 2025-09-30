@@ -10,7 +10,6 @@ import {
   Box,
   Typography,
   Divider,
-  IconButton,
   Chip,
   Checkbox
 } from '@mui/material';

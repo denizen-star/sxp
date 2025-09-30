@@ -17,7 +17,7 @@ import {
   Star
 } from '@mui/icons-material';
 import { UserPersona } from '../../types';
-import { useDesignSystem, List, LoadingStates, EmptyStates } from '../../design-system';
+import { useDesignSystem, LoadingStates, EmptyStates } from '../../design-system';
 
 interface PersonaSelectorProps {
   personas: UserPersona[];

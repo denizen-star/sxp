@@ -5,12 +5,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  FormHelperText,
-  Box,
-  Typography,
-  TextFieldProps,
-  SelectProps,
-  FormControlProps
+  FormHelperText
 } from '@mui/material';
 import { useDesignSystem } from './hooks';
 
@@ -51,7 +46,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   size = 'small',
   variant = 'outlined'
 }) => {
-  const { colors, typography, helpers } = useDesignSystem();
+  const { colors, typography } = useDesignSystem();
 
   const handleChange = (event: any) => {
     if (onChange) {

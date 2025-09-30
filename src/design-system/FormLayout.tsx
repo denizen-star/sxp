@@ -27,15 +27,6 @@ export const FormLayout: React.FC<FormLayoutProps> = ({
 }) => {
   const { colors, typography, helpers } = useDesignSystem();
 
-  const getGridSize = () => {
-    switch (columns) {
-      case 1: return 12;
-      case 2: return 6;
-      case 3: return 4;
-      case 4: return 3;
-      default: return 12;
-    }
-  };
 
   return (
     <Box sx={{ width: fullWidth ? '100%' : 'auto' }}>

@@ -29,7 +29,7 @@ export const FormGroup: React.FC<FormGroupProps> = ({
   showDivider = false,
   required = false
 }) => {
-  const { colors, typography, helpers } = useDesignSystem();
+  const { colors, typography } = useDesignSystem();
 
   const handleCheckboxChange = (optionValue: string, checked: boolean) => {
     if (!onChange) return;

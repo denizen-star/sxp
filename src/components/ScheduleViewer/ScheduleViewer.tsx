@@ -18,7 +18,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@mui/material';
-import { useDesignSystem, LoadingStates, EmptyStates, Alert, Table } from '../../design-system';
+import { useDesignSystem, LoadingStates } from '../../design-system';
 import {
   ChevronLeft,
   ChevronRight,
@@ -36,7 +36,6 @@ import {
   FileDownload,
   PictureAsPdf,
   CloudDownload,
-  Warning,
 } from '@mui/icons-material';
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
 import { WeeklySchedule, ScheduleItem, UserPersona } from '../../types';
@@ -54,7 +53,7 @@ const ScheduleViewer: React.FC<ScheduleViewerProps> = ({
   persona,
   loading = false
 }) => {
-  const { colors, helpers } = useDesignSystem();
+  const { } = useDesignSystem();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'day' | 'week' | 'month' | 'year'>('week');
   const [creativeSuggestion, setCreativeSuggestion] = useState<any>(null);

@@ -18,7 +18,7 @@ import {
   ListItem,
   ListItemText
 } from '@mui/material';
-import { useDesignSystem, TabSystem, Breadcrumb, Alert } from '../../design-system';
+import { useDesignSystem, TabSystem } from '../../design-system';
 
 const NavigationGuide: React.FC = () => {
   const { colors, helpers } = useDesignSystem();

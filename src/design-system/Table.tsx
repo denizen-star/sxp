@@ -10,14 +10,8 @@ import {
   Paper,
   Box,
   Typography,
-  Checkbox,
-  IconButton,
-  Chip
+  Checkbox
 } from '@mui/material';
-import {
-  ArrowUpward as ArrowUpwardIcon,
-  ArrowDownward as ArrowDownwardIcon
-} from '@mui/icons-material';
 import { useDesignSystem } from './hooks';
 
 export interface TableColumn {

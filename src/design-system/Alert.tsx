@@ -4,9 +4,7 @@ import {
   AlertTitle,
   Snackbar,
   IconButton,
-  Collapse,
-  Box,
-  Typography
+  Collapse
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { useDesignSystem } from './hooks';
@@ -38,7 +36,7 @@ export const Alert: React.FC<AlertProps> = ({
   fullWidth = true,
   showIcon = true
 }) => {
-  const { colors, typography, helpers } = useDesignSystem();
+  const { colors, typography } = useDesignSystem();
   const [open, setOpen] = React.useState(true);
 
   const handleClose = () => {
@@ -48,19 +46,6 @@ export const Alert: React.FC<AlertProps> = ({
     }
   };
 
-  const getSeverityColor = () => {
-    switch (severity) {
-      case 'error':
-        return colors.status.error;
-      case 'warning':
-        return colors.status.partial;
-      case 'success':
-        return colors.status.success;
-      case 'info':
-      default:
-        return colors.status.functional;
-    }
-  };
 
   const alertStyles = {
     width: fullWidth ? '100%' : 'auto',
