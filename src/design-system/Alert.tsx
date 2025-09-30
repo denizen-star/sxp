@@ -36,7 +36,7 @@ export const Alert: React.FC<AlertProps> = ({
   fullWidth = true,
   showIcon = true
 }) => {
-  const { colors, typography } = useDesignSystem();
+  const { colors, typography, helpers } = useDesignSystem();
   const [open, setOpen] = React.useState(true);
 
   const handleClose = () => {
