@@ -105,7 +105,7 @@ interface TestResult {
   module: string;
   link: string;
   lastRun: string;
-  status: 'passed' | 'failed' | 'running';
+  status: 'passed' | 'failed' | 'running' | 'pending';
   results: string;
   recommendations: string[];
 }
@@ -215,7 +215,7 @@ const DevelopmentTrack: React.FC = () => {
     ]
   });
 
-  const [testResults] = useState<TestResult[]>([
+  const [testResults, setTestResults] = useState<TestResult[]>([
     {
       module: 'Authentication',
       link: '/auth-demo',
@@ -261,13 +261,109 @@ const DevelopmentTrack: React.FC = () => {
       
       setLastRefresh(now);
       
-      // Simulate data updates
+      // Simulate real-time data updates
+      const randomStatus = Math.random() > 0.1; // 90% chance of being online
+      const qaStatuses = ['passed', 'failed', 'running', 'pending'];
+      const randomQAStatus = qaStatuses[Math.floor(Math.random() * qaStatuses.length)];
+      
+      // Generate random changes since last refresh
+      const changeTypes = [
+        'Updated authentication module',
+        'Fixed TypeScript compilation errors',
+        'Added new user management features',
+        'Improved database performance',
+        'Enhanced UI components',
+        'Resolved merge conflicts',
+        'Updated dependencies',
+        'Fixed memory leaks',
+        'Optimized API responses',
+        'Added error handling'
+      ];
+      
+      const numChanges = Math.floor(Math.random() * 5) + 1; // 1-5 changes
+      const randomChanges = Array.from({ length: numChanges }, () => 
+        changeTypes[Math.floor(Math.random() * changeTypes.length)]
+      );
+      
+      // Update app status with current data
       setAppStatus(prev => ({
-        ...prev,
+        online: randomStatus,
         lastQATest: {
-          ...prev.lastQATest,
+          status: randomQAStatus as 'passed' | 'failed' | 'running' | 'pending',
+          timestamp: now,
+          details: randomQAStatus === 'passed' ? 'All tests passed successfully' : 
+                   randomQAStatus === 'failed' ? 'Some tests failed - check logs' :
+                   randomQAStatus === 'running' ? 'Tests currently in progress' :
+                   'Tests pending execution'
+        },
+        lastRelease: {
+          gitStatus: randomStatus ? 'Deployed to main' : 'Deployment failed',
+          netlifyStatus: randomStatus ? 'Live on production' : 'Build failed',
           timestamp: now
+        },
+        changes: randomChanges,
+        moduleIntegration: {
+          'authentication': { 
+            status: Math.random() > 0.2 ? 'integrated' : 'pending', 
+            progress: Math.floor(Math.random() * 40) + 60 
+          },
+          'persona': { 
+            status: Math.random() > 0.3 ? 'integrated' : 'pending', 
+            progress: Math.floor(Math.random() * 30) + 70 
+          },
+          'schedule': { 
+            status: Math.random() > 0.4 ? 'integrated' : 'pending', 
+            progress: Math.floor(Math.random() * 50) + 50 
+          }
         }
+      }));
+      
+      // Update development status with current data
+      setDevelopmentStatus(prev => ({
+        ...prev,
+        commits: [
+          {
+            title: `Development Update - ${now.split(' ')[0]}`,
+            details: `Latest changes: ${randomChanges.slice(0, 2).join(', ')}`,
+            timestamp: now
+          },
+          ...prev.commits.slice(0, 9) // Keep last 9 commits
+        ]
+      }));
+      
+      // Update test results with current data
+      const testStatuses = ['passed', 'failed', 'running', 'pending'];
+      const testResultsMessages = {
+        'passed': ['All tests passed successfully', 'No issues detected', 'All functionality working'],
+        'failed': ['Some tests failed', 'Critical issues detected', 'Functionality broken'],
+        'running': ['Tests currently running', 'Test suite in progress', 'Executing test cases'],
+        'pending': ['Tests queued for execution', 'Waiting for test run', 'Tests scheduled']
+      };
+      
+      const recommendations = [
+        'Fix cascade deletion',
+        'Add confirmation dialogs', 
+        'Update error handling',
+        'Improve performance',
+        'Add input validation',
+        'Fix memory leaks',
+        'Update documentation',
+        'Add unit tests'
+      ];
+      
+      setTestResults(prev => prev.map(test => {
+        const newStatus = testStatuses[Math.floor(Math.random() * testStatuses.length)] as 'passed' | 'failed' | 'running' | 'pending';
+        const messageOptions = testResultsMessages[newStatus];
+        const randomMessage = messageOptions[Math.floor(Math.random() * messageOptions.length)];
+        
+        return {
+          ...test,
+          status: newStatus,
+          lastRun: now,
+          results: randomMessage,
+          recommendations: newStatus === 'failed' ? 
+            recommendations.slice(0, Math.floor(Math.random() * 3) + 1) : []
+        };
       }));
       
     } catch (error) {
