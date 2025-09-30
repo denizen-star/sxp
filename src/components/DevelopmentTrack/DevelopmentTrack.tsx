@@ -123,7 +123,6 @@ const DevelopmentTrack: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
   const [devActiveTab, setDevActiveTab] = useState('backlog');
   const [testActiveTab, setTestActiveTab] = useState('authentication');
-  const [useRealData] = useState(true);
   
   // State for all data
   const [appStatus, setAppStatus] = useState<AppStatus>({
@@ -317,7 +316,7 @@ const DevelopmentTrack: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [useRealData]);
+  }, []);
 
   useEffect(() => {
     refreshAllData();
