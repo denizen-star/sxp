@@ -644,6 +644,12 @@ const ServicesAvailable: React.FC = () => {
                 description: 'Module-specific documentation and guides',
                 link: '/docs/sxp-modules',
                 category: 'Technical'
+              },
+              {
+                title: 'Real Data Integration',
+                description: 'Guide for integrating real data with Development Track',
+                link: '/docs/real-data-integration',
+                category: 'Technical'
               }
             ].map((guide, index) => (
               <Paper key={index} sx={{ 

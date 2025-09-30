@@ -13,6 +13,7 @@ import DevelopmentStatus from './components/DocumentationPages/DevelopmentStatus
 import ContributingGuide from './components/DocumentationPages/ContributingGuide';
 import FAQ from './components/DocumentationPages/FAQ';
 import SxpModules from './components/DocumentationPages/SxpModules';
+import RealDataIntegration from './components/DocumentationPages/RealDataIntegration';
 import LandingPage from './components/LandingPage/LandingPage';
 import { AuthDemo, EnhancedSignup, EmailTest, EmailVerification, UserManagement, AuthActivity } from './modules/authentication-module';
 import DatabaseQuery from './modules/authentication-module/components/DatabaseQuery/DatabaseQuery';
@@ -115,6 +116,10 @@ function AppContent() {
               <Route 
                 path="/docs/sxp-modules" 
                 element={<SxpModules />} 
+              />
+              <Route 
+                path="/docs/real-data-integration" 
+                element={<RealDataIntegration />} 
               />
               <Route 
                 path="/schedule" 
