@@ -76,6 +76,20 @@ The application will be available at `http://localhost:3000`
 
 For detailed deployment instructions, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
 
+## 📚 Documentation
+
+Comprehensive documentation is available in the [docs](./docs/) folder:
+
+- **[Project Overview](./docs/project-overview.md)** - Complete project overview and architecture
+- **[SXP Modules](./docs/sxp-modules.md)** - Detailed module architecture and specifications
+- **[Development Status](./docs/development-status.md)** - Current development status and roadmap
+- **[API Documentation](./docs/api-documentation.md)** - API endpoints and integration guides
+- **[Setup Guide](./docs/setup-guide.md)** - Local development setup instructions
+- **[Deployment Guide](./docs/deployment-guide.md)** - Production deployment instructions
+- **[Contributing Guide](./docs/contributing-guide.md)** - How to contribute to SXP development
+- **[User Guide](./docs/user-guide.md)** - End-user documentation and features
+- **[FAQ](./docs/faq.md)** - Frequently asked questions
+
 ### Building for Production
 
 ```bash

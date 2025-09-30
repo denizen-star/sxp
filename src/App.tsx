@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import PersonaSelector from './components/PersonaSelector/PersonaSelector';
 import ScheduleViewer from './components/ScheduleViewer/ScheduleViewer';
 import NavigationGuide from './components/NavigationGuide/NavigationGuide';
+import LandingPage from './components/LandingPage/LandingPage';
 import { AuthDemo, EnhancedSignup, EmailTest, EmailVerification, UserManagement, AuthActivity } from './modules/authentication-module';
 import DatabaseQuery from './modules/authentication-module/components/DatabaseQuery/DatabaseQuery';
 import { useStore } from './store/useStore';
@@ -64,6 +65,10 @@ function AppContent() {
         <Routes>
               <Route 
                 path="/" 
+                element={<LandingPage />} 
+              />
+              <Route 
+                path="/personas" 
                 element={
                   <PersonaSelector
                     personas={personas}
