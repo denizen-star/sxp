@@ -1,4 +1,4 @@
-// Type definitions for LifePlanner React Application
+// Type definitions for SXP React Application
 
 export interface Demographics {
   age_range: [number, number];

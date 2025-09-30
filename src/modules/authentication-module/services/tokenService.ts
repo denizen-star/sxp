@@ -50,7 +50,7 @@ export class TokenService {
     try {
       const existingTokens = this.getAllTokens();
       existingTokens.push(fullTokenData);
-      localStorage.setItem('optimizer_verification_tokens', JSON.stringify(existingTokens));
+      localStorage.setItem('sxp_verification_tokens', JSON.stringify(existingTokens));
     } catch (error) {
       console.error('Failed to store token:', error);
     }
@@ -96,7 +96,7 @@ export class TokenService {
    */
   static getAllTokens(): TokenData[] {
     try {
-      const stored = localStorage.getItem('optimizer_verification_tokens');
+      const stored = localStorage.getItem('sxp_verification_tokens');
       if (!stored) return [];
       
       const parsed = JSON.parse(stored);
@@ -120,7 +120,7 @@ export class TokenService {
       const index = tokens.findIndex(t => t.token === updatedToken.token);
       if (index !== -1) {
         tokens[index] = updatedToken;
-        localStorage.setItem('optimizer_verification_tokens', JSON.stringify(tokens));
+        localStorage.setItem('sxp_verification_tokens', JSON.stringify(tokens));
       }
     } catch (error) {
       console.error('Failed to update token:', error);
@@ -137,7 +137,7 @@ export class TokenService {
       const validTokens = tokens.filter(token => token.expiresAt > now);
       
       if (validTokens.length !== tokens.length) {
-        localStorage.setItem('optimizer_verification_tokens', JSON.stringify(validTokens));
+        localStorage.setItem('sxp_verification_tokens', JSON.stringify(validTokens));
         console.log(`Cleaned up ${tokens.length - validTokens.length} expired tokens`);
       }
     } catch (error) {
@@ -163,7 +163,7 @@ export class TokenService {
     try {
       const tokens = this.getAllTokens();
       const updatedTokens = tokens.filter(token => token.userId !== userId);
-      localStorage.setItem('optimizer_verification_tokens', JSON.stringify(updatedTokens));
+        localStorage.setItem('sxp_verification_tokens', JSON.stringify(updatedTokens));
     } catch (error) {
       console.error('Failed to revoke user tokens:', error);
     }

@@ -20,7 +20,7 @@ export interface ActivityStats {
 }
 
 export class ActivityTrackingService {
-  private static readonly STORAGE_KEY = 'lifeplanner_activity_usage';
+  private static readonly STORAGE_KEY = 'sxp_activity_usage';
   private static readonly ROTATION_THRESHOLD = 3; // Max times to use activity before rotation
 
   static getActivityUsage(): Record<string, ActivityUsage> {

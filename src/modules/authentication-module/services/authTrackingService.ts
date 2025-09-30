@@ -231,7 +231,7 @@ export class AuthTrackingService {
    */
   public updateConfig(newConfig: Partial<AuthTrackingConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    localStorage.setItem('optimizer_auth_config', JSON.stringify(this.config));
+    localStorage.setItem('sxp_auth_config', JSON.stringify(this.config));
   }
 
   // Private helper methods
@@ -240,10 +240,10 @@ export class AuthTrackingService {
   }
 
   private getSessionId(): string {
-    let sessionId = sessionStorage.getItem('optimizer_session_id');
+    let sessionId = sessionStorage.getItem('sxp_session_id');
     if (!sessionId) {
       sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      sessionStorage.setItem('optimizer_session_id', sessionId);
+      sessionStorage.setItem('sxp_session_id', sessionId);
     }
     return sessionId;
   }
@@ -352,7 +352,7 @@ export class AuthTrackingService {
 
   private loadEventsFromStorage(): void {
     try {
-      const stored = localStorage.getItem('optimizer_auth_events');
+      const stored = localStorage.getItem('sxp_auth_events');
       if (stored) {
         const parsedEvents = JSON.parse(stored);
         this.events = parsedEvents.map((event: any) => ({
@@ -361,7 +361,7 @@ export class AuthTrackingService {
         }));
       }
 
-      const storedConfig = localStorage.getItem('optimizer_auth_config');
+      const storedConfig = localStorage.getItem('sxp_auth_config');
       if (storedConfig) {
         this.config = { ...this.config, ...JSON.parse(storedConfig) };
       }
@@ -373,7 +373,7 @@ export class AuthTrackingService {
 
   private saveEventsToStorage(): void {
     try {
-      localStorage.setItem('optimizer_auth_events', JSON.stringify(this.events));
+      localStorage.setItem('sxp_auth_events', JSON.stringify(this.events));
     } catch (error) {
       console.warn('Failed to save auth events to storage:', error);
     }

@@ -10,7 +10,7 @@ export class UrlService {
   static getBaseUrl(): string {
     // In production, use the actual domain
     if (process.env.NODE_ENV === 'production') {
-      return 'https://optimizer.kervinapps.com';
+      return 'https://sxp.kervinapps.com';
     }
     
     // In development, use localhost

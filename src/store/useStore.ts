@@ -70,7 +70,7 @@ export const useStore = create<AppStore>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       // In a real app, this would be an API call
-      // Kevin personas based on the original LifePlanner data
+      // Kevin personas based on the original SXP data
       const personas: UserPersona[] = [
         {
           persona_id: "kevin_job_search",

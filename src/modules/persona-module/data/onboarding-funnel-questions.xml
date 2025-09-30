@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <onboarding_funnel>
   <metadata>
-    <title>LifePlanner Onboarding Configuration</title>
-    <description>Comprehensive user onboarding questions for the LifePlanner system</description>
+    <title>SXP Onboarding Configuration</title>
+    <description>Comprehensive user onboarding questions for the SXP system</description>
     <version>1.0</version>
-    <source>lifeplanner/src/features/configuration/configuration_wizard.py</source>
+    <source>sxp/src/features/configuration/configuration_wizard.py</source>
   </metadata>
 
   <section id="basic_information" title="Basic Information" icon="👤">

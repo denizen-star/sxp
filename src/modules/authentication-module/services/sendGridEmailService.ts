@@ -20,8 +20,8 @@ export interface PasswordResetData {
 
 export class SendGridEmailService {
   private static readonly SENDGRID_API_URL = 'https://api.sendgrid.com/v3/mail/send';
-  private static readonly FROM_EMAIL = process.env.REACT_APP_FROM_EMAIL || 'noreply@optimizer.kervinapps.com';
-  private static readonly FROM_NAME = 'Optimizer';
+  private static readonly FROM_EMAIL = process.env.REACT_APP_FROM_EMAIL || 'noreply@sxp.kervinapps.com';
+  private static readonly FROM_NAME = 'SXP';
   // Fallback API key - add your SendGrid API key here for production
   private static readonly FALLBACK_API_KEY = process.env.NODE_ENV === 'production' ? 'YOUR_SENDGRID_API_KEY_HERE' : null;
 
@@ -60,7 +60,7 @@ export class SendGridEmailService {
         body: JSON.stringify({
           to: data.email,
           from: this.FROM_EMAIL,
-          subject: 'Verify Your Email - Optimizer',
+          subject: 'Verify Your Email - SXP',
           html: this.getVerificationEmailHTML(data.name, verificationUrl, data.email),
           templateId: 'd-3ee64b454500491c8e5a2cbae5040ced',
           dynamicTemplateData: {
@@ -115,7 +115,7 @@ export class SendGridEmailService {
         body: JSON.stringify({
           to: data.email,
           from: this.FROM_EMAIL,
-          subject: 'Reset Your Password - Optimizer',
+          subject: 'Reset Your Password - SXP',
           html: this.getPasswordResetEmailHTML(data.name, resetUrl),
           templateId: 'd-dbf9789afd6b44de8b0c16708852142c',
           dynamicTemplateData: {
@@ -168,7 +168,7 @@ export class SendGridEmailService {
         body: JSON.stringify({
           to: email,
           from: this.FROM_EMAIL,
-          subject: 'Welcome to Optimizer!',
+          subject: 'Welcome to SXP!',
           html: this.getWelcomeEmailHTML(name, email)
         }),
       });
@@ -204,7 +204,7 @@ export class SendGridEmailService {
     console.log('User ID:', data.userId);
     console.log('Verification URL:', verificationUrl);
     console.log('Token:', token);
-    console.log('Subject: Verify Your Email - Optimizer');
+    console.log('Subject: Verify Your Email - SXP');
     console.log('🔗 Click this link to verify your email:');
     console.log(verificationUrl);
     console.log('📝 Copy this URL and paste it in your browser to complete verification');
@@ -217,7 +217,7 @@ export class SendGridEmailService {
     console.log('To:', data.email);
     console.log('Name:', data.name);
     console.log('Reset URL:', resetUrl);
-    console.log('Subject: Reset Your Password - Optimizer');
+    console.log('Subject: Reset Your Password - SXP');
     console.log('🔗 Click this link to reset your password:');
     console.log(resetUrl);
     return true;
@@ -227,7 +227,7 @@ export class SendGridEmailService {
     console.log('📧 Welcome Email Sent (Console Fallback):');
     console.log('To:', email);
     console.log('Name:', name);
-    console.log('Subject: Welcome to Optimizer!');
+    console.log('Subject: Welcome to SXP!');
     return true;
   }
 
@@ -241,7 +241,7 @@ export class SendGridEmailService {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Verify Your Email - Optimizer</title>
+        <title>Verify Your Email - SXP</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -254,12 +254,12 @@ export class SendGridEmailService {
       <body>
         <div class="container">
           <div class="header">
-            <h1>🎯 Optimizer</h1>
+            <h1>🎯 SXP</h1>
             <p>Advanced Personal Time Management</p>
           </div>
           <div class="content">
             <h2>Hi ${name}!</h2>
-            <p>Welcome to Optimizer! We're excited to help you optimize your daily routine and achieve better work-life balance.</p>
+            <p>Welcome to SXP! We're excited to help you transform your professional networking and build meaningful relationships.</p>
             <p>To get started, please verify your email address by clicking the button below:</p>
             <div style="text-align: center;">
               <a href="${verificationUrl}" class="button">Verify Email Address</a>
@@ -267,10 +267,10 @@ export class SendGridEmailService {
             <p>If the button doesn't work, you can also copy and paste this link into your browser:</p>
             <p style="word-break: break-all; background: #eee; padding: 10px; border-radius: 5px;">${verificationUrl}</p>
             <p><strong>This link will expire in 24 hours for security reasons.</strong></p>
-            <p>If you didn't create an account with Optimizer, you can safely ignore this email.</p>
+            <p>If you didn't create an account with SXP, you can safely ignore this email.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Optimizer. All rights reserved.</p>
+            <p>© 2024 SXP. All rights reserved.</p>
             <p>This email was sent to ${email}</p>
           </div>
         </div>
@@ -289,7 +289,7 @@ export class SendGridEmailService {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Reset Your Password - Optimizer</title>
+        <title>Reset Your Password - SXP</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -302,12 +302,12 @@ export class SendGridEmailService {
       <body>
         <div class="container">
           <div class="header">
-            <h1>🔒 Optimizer</h1>
+            <h1>🔒 SXP</h1>
             <p>Password Reset Request</p>
           </div>
           <div class="content">
             <h2>Hi ${name}!</h2>
-            <p>We received a request to reset your password for your Optimizer account.</p>
+            <p>We received a request to reset your password for your SXP account.</p>
             <p>To reset your password, click the button below:</p>
             <div style="text-align: center;">
               <a href="${resetUrl}" class="button">Reset Password</a>
@@ -318,7 +318,7 @@ export class SendGridEmailService {
             <p>If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Optimizer. All rights reserved.</p>
+            <p>© 2024 SXP. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -336,7 +336,7 @@ export class SendGridEmailService {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to Optimizer!</title>
+        <title>Welcome to SXP!</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -349,26 +349,26 @@ export class SendGridEmailService {
       <body>
         <div class="container">
           <div class="header">
-            <h1>🎉 Welcome to Optimizer!</h1>
+            <h1>🎉 Welcome to SXP!</h1>
             <p>Your journey to better time management starts now</p>
           </div>
           <div class="content">
             <h2>Hi ${name}!</h2>
-            <p>Congratulations! Your email has been verified and your Optimizer account is now active.</p>
+            <p>Congratulations! Your email has been verified and your SXP account is now active.</p>
             <p>Here's what you can do next:</p>
             <ul>
               <li>🎯 <strong>Select Your Persona:</strong> Choose from different life phases and goals</li>
               <li>⚙️ <strong>Tune Your Allocations:</strong> Customize how you want to spend your time</li>
-              <li>📅 <strong>Generate Schedules:</strong> Let AI create optimized daily routines</li>
+              <li>📅 <strong>Generate Schedules:</strong> Let AI create optimized professional networking schedules</li>
               <li>📊 <strong>Track Progress:</strong> Monitor your time usage and improvements</li>
             </ul>
             <div style="text-align: center;">
-              <a href="https://optimizer.kervinapps.com" class="button">Start Using Optimizer</a>
+              <a href="https://sxp.kervinapps.com" class="button">Start Using SXP</a>
             </div>
             <p>If you have any questions or need help getting started, don't hesitate to reach out to our support team.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Optimizer. All rights reserved.</p>
+            <p>© 2024 SXP. All rights reserved.</p>
           </div>
         </div>
       </body>

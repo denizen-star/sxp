@@ -65,17 +65,17 @@ export class SimpleEmailService {
   static getEmailTemplates() {
     return {
       verification: {
-        subject: 'Verify Your Email - Optimizer',
+        subject: 'Verify Your Email - SXP',
         html: this.getVerificationEmailTemplate(),
         text: this.getVerificationEmailText()
       },
       passwordReset: {
-        subject: 'Reset Your Password - Optimizer',
+        subject: 'Reset Your Password - SXP',
         html: this.getPasswordResetEmailTemplate(),
         text: this.getPasswordResetEmailText()
       },
       welcome: {
-        subject: 'Welcome to Optimizer!',
+        subject: 'Welcome to SXP!',
         html: this.getWelcomeEmailTemplate(),
         text: this.getWelcomeEmailText()
       }
@@ -89,7 +89,7 @@ export class SimpleEmailService {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Verify Your Email - Optimizer</title>
+        <title>Verify Your Email - SXP</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -102,12 +102,12 @@ export class SimpleEmailService {
       <body>
         <div class="container">
           <div class="header">
-            <h1>🎯 Optimizer</h1>
+            <h1>🎯 SXP</h1>
             <p>Advanced Personal Time Management</p>
           </div>
           <div class="content">
             <h2>Hi {{name}}!</h2>
-            <p>Welcome to Optimizer! We're excited to help you optimize your daily routine and achieve better work-life balance.</p>
+            <p>Welcome to SXP! We're excited to help you transform your professional networking and build meaningful relationships.</p>
             <p>To get started, please verify your email address by clicking the button below:</p>
             <div style="text-align: center;">
               <a href="{{verificationUrl}}" class="button">Verify Email Address</a>
