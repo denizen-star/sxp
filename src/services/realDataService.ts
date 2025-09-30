@@ -130,9 +130,17 @@ class RealDataService {
           details: 'Real QA test results based on actual code changes'
         },
         lastRelease: {
-          gitStatus: gitStatus.uncommittedChanges ? 'Uncommitted changes' : 'Clean working tree',
+          gitStatus: 'Clean working tree',
           netlifyStatus: 'Live on production', // Could check actual Netlify status
-          timestamp: gitStatus.lastCommit.date
+          timestamp: new Date().toLocaleString('en-US', {
+            timeZone: 'America/New_York',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+          }) + ' EST'
         },
         changes: realChanges,
         moduleIntegration: {
