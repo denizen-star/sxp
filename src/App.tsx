@@ -3,7 +3,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Box } from '@mui/material';
 import PersonaSelector from './components/PersonaSelector/PersonaSelector';
 import ScheduleViewer from './components/ScheduleViewer/ScheduleViewer';
-import NavigationGuide from './components/NavigationGuide/NavigationGuide';
+import DevelopmentTrack from './components/DevelopmentTrack/DevelopmentTrack';
+import ServicesAvailable from './components/ServicesAvailable/ServicesAvailable';
+import ApiDocumentation from './components/DocumentationPages/ApiDocumentation';
+import UserGuide from './components/DocumentationPages/UserGuide';
+import SetupGuide from './components/DocumentationPages/SetupGuide';
+import DeploymentGuide from './components/DocumentationPages/DeploymentGuide';
+import DevelopmentStatus from './components/DocumentationPages/DevelopmentStatus';
+import ContributingGuide from './components/DocumentationPages/ContributingGuide';
+import FAQ from './components/DocumentationPages/FAQ';
+import SxpModules from './components/DocumentationPages/SxpModules';
 import LandingPage from './components/LandingPage/LandingPage';
 import { AuthDemo, EnhancedSignup, EmailTest, EmailVerification, UserManagement, AuthActivity } from './modules/authentication-module';
 import DatabaseQuery from './modules/authentication-module/components/DatabaseQuery/DatabaseQuery';
@@ -68,8 +77,44 @@ function AppContent() {
                 } 
               />
               <Route 
-                path="/navigation-guide" 
-                element={<NavigationGuide />} 
+                path="/development-track" 
+                element={<DevelopmentTrack />} 
+              />
+              <Route 
+                path="/services-available" 
+                element={<ServicesAvailable />} 
+              />
+              <Route 
+                path="/docs/api-documentation" 
+                element={<ApiDocumentation />} 
+              />
+              <Route 
+                path="/docs/user-guide" 
+                element={<UserGuide />} 
+              />
+              <Route 
+                path="/docs/setup-guide" 
+                element={<SetupGuide />} 
+              />
+              <Route 
+                path="/docs/deployment-guide" 
+                element={<DeploymentGuide />} 
+              />
+              <Route 
+                path="/docs/development-status" 
+                element={<DevelopmentStatus />} 
+              />
+              <Route 
+                path="/docs/contributing-guide" 
+                element={<ContributingGuide />} 
+              />
+              <Route 
+                path="/docs/faq" 
+                element={<FAQ />} 
+              />
+              <Route 
+                path="/docs/sxp-modules" 
+                element={<SxpModules />} 
               />
               <Route 
                 path="/schedule" 

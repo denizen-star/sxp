@@ -91,11 +91,18 @@ const ModernDropdownMenu: React.FC = () => {
       description: 'Development tools and guides',
       items: [
         { 
-          id: 'guide', 
-          label: 'Development Guide', 
-          path: '/navigation-guide', 
-          description: 'Comprehensive development documentation',
-          badge: 'Updated'
+          id: 'track', 
+          label: 'Development Track', 
+          path: '/development-track', 
+          description: 'Real-time development status and monitoring',
+          badge: 'New'
+        },
+        { 
+          id: 'services', 
+          label: 'Services Available', 
+          path: '/services-available', 
+          description: 'Available services and workflows',
+          badge: 'New'
         },
         { 
           id: 'tests', 
