@@ -122,7 +122,6 @@ function AppContent() {
                 element={<RealDataIntegration />} 
               />
               <Route 
-              <Route 
                 path="/schedule" 
                 element={
                   selectedPersona ? (
