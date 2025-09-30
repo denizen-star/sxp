@@ -431,7 +431,7 @@ class RealDataService {
 
   private getActualGitCommits() {
     // Real git commit data from your repository with dynamic timestamp conversion
-    const baseTime = new Date('2025-09-30T18:51:26-04:00'); // Base time in EDT
+    const baseTime = new Date('2025-09-30T22:51:26Z'); // Base time in UTC (git format)
     const commits = [
       {
         hash: '3408ae451efaa5f2f0c7878f5a619e25f502cdb6',
@@ -543,7 +543,11 @@ class RealDataService {
   }
 
   private convertToEDT(baseTime: Date, minutesAgo: number): string {
+    // Calculate the commit time by subtracting minutes from base time
     const commitTime = new Date(baseTime.getTime() - (minutesAgo * 60 * 1000));
+    
+    // Convert from UTC to EDT using toLocaleString with America/New_York timezone
+    // This automatically handles the UTC to EDT conversion (UTC-4 during daylight saving)
     return commitTime.toLocaleString('en-US', {
       timeZone: 'America/New_York',
       year: 'numeric',
