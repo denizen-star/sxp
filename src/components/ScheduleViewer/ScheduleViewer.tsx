@@ -53,7 +53,7 @@ const ScheduleViewer: React.FC<ScheduleViewerProps> = ({
   persona,
   loading = false
 }) => {
-  const { colors } = useDesignSystem();
+  const { } = useDesignSystem();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'day' | 'week' | 'month' | 'year'>('week');
   const [creativeSuggestion, setCreativeSuggestion] = useState<any>(null);
