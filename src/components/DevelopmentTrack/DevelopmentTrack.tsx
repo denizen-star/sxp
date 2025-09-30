@@ -17,9 +17,16 @@ import {
   ListItemText,
   Divider,
   CircularProgress,
-  Alert
+  Alert,
+  IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  TextField
 } from '@mui/material';
-import { Refresh, CheckCircle, Error, Warning, Info } from '@mui/icons-material';
+import { Refresh, CheckCircle, Error, Warning, Info, ArrowUpward, ArrowDownward, Star, StarBorder, CheckCircleOutline } from '@mui/icons-material';
 import { useDesignSystem } from '../../design-system';
 
 interface AppStatus {
@@ -48,15 +55,47 @@ interface DevelopmentStatus {
     modules: Array<{
       name: string;
       completion: number;
-      next: string[];
-      pending: string[];
+      next: Array<{
+        id: string;
+        task: string;
+        priority: number;
+        estimatedHours: number;
+        assignee?: string;
+        completed: boolean;
+        order: number;
+      }>;
+      pending: Array<{
+        id: string;
+        task: string;
+        priority: number;
+        estimatedHours: number;
+        assignee?: string;
+        completed: boolean;
+        order: number;
+      }>;
     }>;
     backend: {
-      next: string[];
+      next: Array<{
+        id: string;
+        task: string;
+        priority: number;
+        estimatedHours: number;
+        assignee?: string;
+        completed: boolean;
+        order: number;
+      }>;
       design: string[];
     };
     frontend: {
-      next: string[];
+      next: Array<{
+        id: string;
+        task: string;
+        priority: number;
+        estimatedHours: number;
+        assignee?: string;
+        completed: boolean;
+        order: number;
+      }>;
       design: string[];
     };
   };
@@ -116,28 +155,49 @@ const DevelopmentTrack: React.FC = () => {
         {
           name: 'Authentication Module',
           completion: 100,
-          next: ['Email verification enhancement', 'Password reset flow'],
+          next: [
+            { id: 'auth-1', task: 'Email verification enhancement', priority: 1, estimatedHours: 8, assignee: 'John Doe', completed: false, order: 1 },
+            { id: 'auth-2', task: 'Password reset flow', priority: 2, estimatedHours: 6, assignee: 'Jane Smith', completed: false, order: 2 }
+          ],
           pending: []
         },
         {
           name: 'Persona Module',
           completion: 85,
-          next: ['Onboarding flow completion', 'Persona switching'],
-          pending: ['Advanced persona analytics']
+          next: [
+            { id: 'persona-1', task: 'Onboarding flow completion', priority: 1, estimatedHours: 12, assignee: 'Mike Johnson', completed: false, order: 1 },
+            { id: 'persona-2', task: 'Persona switching', priority: 2, estimatedHours: 4, assignee: 'Sarah Wilson', completed: false, order: 2 }
+          ],
+          pending: [
+            { id: 'persona-3', task: 'Advanced persona analytics', priority: 3, estimatedHours: 16, assignee: 'Tom Brown', completed: false, order: 3 }
+          ]
         },
         {
           name: 'Schedule Module',
           completion: 60,
-          next: ['Time optimization algorithms', 'Conflict resolution'],
-          pending: ['Calendar integration', 'Export functionality']
+          next: [
+            { id: 'schedule-1', task: 'Time optimization algorithms', priority: 1, estimatedHours: 20, assignee: 'Alex Davis', completed: false, order: 1 },
+            { id: 'schedule-2', task: 'Conflict resolution', priority: 2, estimatedHours: 10, assignee: 'Lisa Garcia', completed: false, order: 2 }
+          ],
+          pending: [
+            { id: 'schedule-3', task: 'Calendar integration', priority: 3, estimatedHours: 14, assignee: 'Chris Lee', completed: false, order: 3 },
+            { id: 'schedule-4', task: 'Export functionality', priority: 4, estimatedHours: 8, assignee: 'Emma Taylor', completed: false, order: 4 }
+          ]
         }
       ],
       backend: {
-        next: ['API rate limiting', 'Database optimization', 'Caching layer'],
+        next: [
+          { id: 'backend-1', task: 'API rate limiting', priority: 1, estimatedHours: 6, assignee: 'Backend Team', completed: false, order: 1 },
+          { id: 'backend-2', task: 'Database optimization', priority: 2, estimatedHours: 12, assignee: 'DBA Team', completed: false, order: 2 },
+          { id: 'backend-3', task: 'Caching layer', priority: 3, estimatedHours: 8, assignee: 'Backend Team', completed: false, order: 3 }
+        ],
         design: ['Microservices architecture', 'Event-driven patterns']
       },
       frontend: {
-        next: ['Component library expansion', 'Accessibility improvements'],
+        next: [
+          { id: 'frontend-1', task: 'Component library expansion', priority: 2, estimatedHours: 16, assignee: 'Frontend Team', completed: false, order: 2 },
+          { id: 'frontend-2', task: 'Accessibility improvements', priority: 1, estimatedHours: 10, assignee: 'UX Team', completed: false, order: 1 }
+        ],
         design: ['Design system consistency', 'Mobile responsiveness']
       }
     },
@@ -258,6 +318,68 @@ const DevelopmentTrack: React.FC = () => {
       default:
         return colors.text.secondary;
     }
+  };
+
+  const getPriorityColor = (priority: number) => {
+    if (priority === 1) return colors.status.error;
+    if (priority === 2) return colors.accent.teal;
+    if (priority === 3) return colors.accent.blue;
+    return colors.text.secondary;
+  };
+
+  const getPriorityIcon = (priority: number) => {
+    if (priority === 1) return <Star sx={{ color: colors.status.error, fontSize: 16 }} />;
+    if (priority === 2) return <StarBorder sx={{ color: colors.accent.teal, fontSize: 16 }} />;
+    if (priority === 3) return <StarBorder sx={{ color: colors.accent.blue, fontSize: 16 }} />;
+    return <StarBorder sx={{ color: colors.text.secondary, fontSize: 16 }} />;
+  };
+
+  const updateTaskPriority = (moduleIndex: number, taskType: 'next' | 'pending', taskIndex: number, newPriority: number) => {
+    setDevelopmentStatus(prev => {
+      const updated = { ...prev };
+      updated.backlog.modules[moduleIndex][taskType][taskIndex].priority = newPriority;
+      return updated;
+    });
+  };
+
+  const toggleTaskCompletion = (moduleIndex: number, taskType: 'next' | 'pending', taskIndex: number) => {
+    setDevelopmentStatus(prev => {
+      const updated = { ...prev };
+      updated.backlog.modules[moduleIndex][taskType][taskIndex].completed = !updated.backlog.modules[moduleIndex][taskType][taskIndex].completed;
+      return updated;
+    });
+  };
+
+  const updateTaskOrder = (moduleIndex: number, taskType: 'next' | 'pending', taskIndex: number, newOrder: number) => {
+    setDevelopmentStatus(prev => {
+      const updated = { ...prev };
+      updated.backlog.modules[moduleIndex][taskType][taskIndex].order = newOrder;
+      // Sort tasks by order
+      updated.backlog.modules[moduleIndex][taskType].sort((a, b) => a.order - b.order);
+      return updated;
+    });
+  };
+
+  const moveTaskUp = (moduleIndex: number, taskType: 'next' | 'pending', taskIndex: number) => {
+    if (taskIndex > 0) {
+      setDevelopmentStatus(prev => {
+        const updated = { ...prev };
+        const tasks = updated.backlog.modules[moduleIndex][taskType];
+        [tasks[taskIndex], tasks[taskIndex - 1]] = [tasks[taskIndex - 1], tasks[taskIndex]];
+        return updated;
+      });
+    }
+  };
+
+  const moveTaskDown = (moduleIndex: number, taskType: 'next' | 'pending', taskIndex: number) => {
+    setDevelopmentStatus(prev => {
+      const updated = { ...prev };
+      const tasks = updated.backlog.modules[moduleIndex][taskType];
+      if (taskIndex < tasks.length - 1) {
+        [tasks[taskIndex], tasks[taskIndex + 1]] = [tasks[taskIndex + 1], tasks[taskIndex]];
+      }
+      return updated;
+    });
   };
 
   return (
@@ -436,23 +558,92 @@ const DevelopmentTrack: React.FC = () => {
           <Box sx={{ minHeight: 200 }}>
             {devActiveTab === 'backlog' && (
               <Box>
-                {developmentStatus.backlog.modules.map((module, index) => (
-                  <Paper key={index} sx={{ p: 2, mb: 2, backgroundColor: colors.background.light }}>
+                {developmentStatus.backlog.modules.map((module, moduleIndex) => (
+                  <Paper key={moduleIndex} sx={{ p: 2, mb: 2, backgroundColor: colors.background.light }}>
                     <Typography variant="subtitle2" sx={{ mb: 1, color: colors.text.primary }}>
                       {module.name} ({module.completion}% complete)
                     </Typography>
                     {module.next.length > 0 && (
-                      <Box sx={{ mb: 1 }}>
-                        <Typography variant="caption" sx={{ color: colors.text.secondary }}>
-                          Next:
+                      <Box sx={{ mb: 2 }}>
+                        <Typography variant="caption" sx={{ color: colors.text.secondary, mb: 1, display: 'block' }}>
+                          Next Tasks:
                         </Typography>
                         <List dense>
-                          {module.next.map((item, idx) => (
-                            <ListItem key={idx} sx={{ py: 0.5 }}>
-                              <ListItemText 
-                                primary={item}
-                                primaryTypographyProps={{ fontSize: '11px' }}
+                          {module.next.map((task, taskIndex) => (
+                            <ListItem key={taskIndex} sx={{ 
+                              py: 0.5, 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: 1,
+                              opacity: task.completed ? 0.6 : 1,
+                              textDecoration: task.completed ? 'line-through' : 'none'
+                            }}>
+                              <Checkbox
+                                checked={task.completed}
+                                onChange={() => toggleTaskCompletion(moduleIndex, 'next', taskIndex)}
+                                size="small"
+                                sx={{ p: 0.5 }}
                               />
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
+                                {getPriorityIcon(task.priority)}
+                                <ListItemText 
+                                  primary={
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                      <Typography sx={{ fontSize: '11px', flex: 1 }}>
+                                        {task.task}
+                                      </Typography>
+                                      <Chip 
+                                        label={`#${task.priority}`}
+                                        size="small"
+                                        sx={{ 
+                                          height: '18px',
+                                          fontSize: '9px',
+                                          backgroundColor: getPriorityColor(task.priority),
+                                          color: 'white'
+                                        }}
+                                      />
+                                      <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                        {task.estimatedHours}h
+                                      </Typography>
+                                      <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                        {task.assignee}
+                                      </Typography>
+                                    </Box>
+                                  }
+                                />
+                              </Box>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                <TextField
+                                  size="small"
+                                  type="number"
+                                  value={task.priority}
+                                  onChange={(e) => updateTaskPriority(moduleIndex, 'next', taskIndex, parseInt(e.target.value) || 1)}
+                                  sx={{ width: 60, '& input': { fontSize: '10px', textAlign: 'center' } }}
+                                  inputProps={{ min: 1, max: 10 }}
+                                />
+                                <TextField
+                                  size="small"
+                                  type="number"
+                                  value={task.order}
+                                  onChange={(e) => updateTaskOrder(moduleIndex, 'next', taskIndex, parseInt(e.target.value) || 1)}
+                                  sx={{ width: 60, '& input': { fontSize: '10px', textAlign: 'center' } }}
+                                  inputProps={{ min: 1 }}
+                                />
+                                <IconButton 
+                                  size="small" 
+                                  onClick={() => moveTaskUp(moduleIndex, 'next', taskIndex)}
+                                  disabled={taskIndex === 0}
+                                >
+                                  <ArrowUpward sx={{ fontSize: 14 }} />
+                                </IconButton>
+                                <IconButton 
+                                  size="small" 
+                                  onClick={() => moveTaskDown(moduleIndex, 'next', taskIndex)}
+                                  disabled={taskIndex === module.next.length - 1}
+                                >
+                                  <ArrowDownward sx={{ fontSize: 14 }} />
+                                </IconButton>
+                              </Box>
                             </ListItem>
                           ))}
                         </List>
@@ -460,16 +651,85 @@ const DevelopmentTrack: React.FC = () => {
                     )}
                     {module.pending.length > 0 && (
                       <Box>
-                        <Typography variant="caption" sx={{ color: colors.text.secondary }}>
-                          Pending:
+                        <Typography variant="caption" sx={{ color: colors.text.secondary, mb: 1, display: 'block' }}>
+                          Pending Tasks:
                         </Typography>
                         <List dense>
-                          {module.pending.map((item, idx) => (
-                            <ListItem key={idx} sx={{ py: 0.5 }}>
-                              <ListItemText 
-                                primary={item}
-                                primaryTypographyProps={{ fontSize: '11px' }}
+                          {module.pending.map((task, taskIndex) => (
+                            <ListItem key={taskIndex} sx={{ 
+                              py: 0.5, 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: 1,
+                              opacity: task.completed ? 0.6 : 1,
+                              textDecoration: task.completed ? 'line-through' : 'none'
+                            }}>
+                              <Checkbox
+                                checked={task.completed}
+                                onChange={() => toggleTaskCompletion(moduleIndex, 'pending', taskIndex)}
+                                size="small"
+                                sx={{ p: 0.5 }}
                               />
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
+                                {getPriorityIcon(task.priority)}
+                                <ListItemText 
+                                  primary={
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                      <Typography sx={{ fontSize: '11px', flex: 1 }}>
+                                        {task.task}
+                                      </Typography>
+                                      <Chip 
+                                        label={`#${task.priority}`}
+                                        size="small"
+                                        sx={{ 
+                                          height: '18px',
+                                          fontSize: '9px',
+                                          backgroundColor: getPriorityColor(task.priority),
+                                          color: 'white'
+                                        }}
+                                      />
+                                      <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                        {task.estimatedHours}h
+                                      </Typography>
+                                      <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                        {task.assignee}
+                                      </Typography>
+                                    </Box>
+                                  }
+                                />
+                              </Box>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                <TextField
+                                  size="small"
+                                  type="number"
+                                  value={task.priority}
+                                  onChange={(e) => updateTaskPriority(moduleIndex, 'pending', taskIndex, parseInt(e.target.value) || 1)}
+                                  sx={{ width: 60, '& input': { fontSize: '10px', textAlign: 'center' } }}
+                                  inputProps={{ min: 1, max: 10 }}
+                                />
+                                <TextField
+                                  size="small"
+                                  type="number"
+                                  value={task.order}
+                                  onChange={(e) => updateTaskOrder(moduleIndex, 'pending', taskIndex, parseInt(e.target.value) || 1)}
+                                  sx={{ width: 60, '& input': { fontSize: '10px', textAlign: 'center' } }}
+                                  inputProps={{ min: 1 }}
+                                />
+                                <IconButton 
+                                  size="small" 
+                                  onClick={() => moveTaskUp(moduleIndex, 'pending', taskIndex)}
+                                  disabled={taskIndex === 0}
+                                >
+                                  <ArrowUpward sx={{ fontSize: 14 }} />
+                                </IconButton>
+                                <IconButton 
+                                  size="small" 
+                                  onClick={() => moveTaskDown(moduleIndex, 'pending', taskIndex)}
+                                  disabled={taskIndex === module.pending.length - 1}
+                                >
+                                  <ArrowDownward sx={{ fontSize: 14 }} />
+                                </IconButton>
+                              </Box>
                             </ListItem>
                           ))}
                         </List>
@@ -487,11 +747,68 @@ const DevelopmentTrack: React.FC = () => {
                     Backend Next Steps
                   </Typography>
                   <List dense>
-                    {developmentStatus.backlog.backend.next.map((item, index) => (
-                      <ListItem key={index} sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary={item}
-                          primaryTypographyProps={{ fontSize: '12px' }}
+                    {developmentStatus.backlog.backend.next.map((task, index) => (
+                      <ListItem key={index} sx={{ 
+                        py: 0.5, 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 1,
+                        opacity: task.completed ? 0.6 : 1,
+                        textDecoration: task.completed ? 'line-through' : 'none'
+                      }}>
+                        <Checkbox
+                          checked={task.completed}
+                          onChange={() => {
+                            setDevelopmentStatus(prev => {
+                              const updated = { ...prev };
+                              updated.backlog.backend.next[index].completed = !updated.backlog.backend.next[index].completed;
+                              return updated;
+                            });
+                          }}
+                          size="small"
+                          sx={{ p: 0.5 }}
+                        />
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
+                          {getPriorityIcon(task.priority)}
+                          <ListItemText 
+                            primary={
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Typography sx={{ fontSize: '12px', flex: 1 }}>
+                                  {task.task}
+                                </Typography>
+                                <Chip 
+                                  label={`#${task.priority}`}
+                                  size="small"
+                                  sx={{ 
+                                    height: '18px',
+                                    fontSize: '9px',
+                                    backgroundColor: getPriorityColor(task.priority),
+                                    color: 'white'
+                                  }}
+                                />
+                                <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                  {task.estimatedHours}h
+                                </Typography>
+                                <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                  {task.assignee}
+                                </Typography>
+                              </Box>
+                            }
+                          />
+                        </Box>
+                        <TextField
+                          size="small"
+                          type="number"
+                          value={task.priority}
+                          onChange={(e) => {
+                            setDevelopmentStatus(prev => {
+                              const updated = { ...prev };
+                              updated.backlog.backend.next[index].priority = parseInt(e.target.value) || 1;
+                              return updated;
+                            });
+                          }}
+                          sx={{ width: 60, '& input': { fontSize: '10px', textAlign: 'center' } }}
+                          inputProps={{ min: 1, max: 10 }}
                         />
                       </ListItem>
                     ))}
@@ -515,11 +832,68 @@ const DevelopmentTrack: React.FC = () => {
                     Frontend Next Steps
                   </Typography>
                   <List dense>
-                    {developmentStatus.backlog.frontend.next.map((item, index) => (
-                      <ListItem key={index} sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary={item}
-                          primaryTypographyProps={{ fontSize: '12px' }}
+                    {developmentStatus.backlog.frontend.next.map((task, index) => (
+                      <ListItem key={index} sx={{ 
+                        py: 0.5, 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 1,
+                        opacity: task.completed ? 0.6 : 1,
+                        textDecoration: task.completed ? 'line-through' : 'none'
+                      }}>
+                        <Checkbox
+                          checked={task.completed}
+                          onChange={() => {
+                            setDevelopmentStatus(prev => {
+                              const updated = { ...prev };
+                              updated.backlog.frontend.next[index].completed = !updated.backlog.frontend.next[index].completed;
+                              return updated;
+                            });
+                          }}
+                          size="small"
+                          sx={{ p: 0.5 }}
+                        />
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
+                          {getPriorityIcon(task.priority)}
+                          <ListItemText 
+                            primary={
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Typography sx={{ fontSize: '12px', flex: 1 }}>
+                                  {task.task}
+                                </Typography>
+                                <Chip 
+                                  label={`#${task.priority}`}
+                                  size="small"
+                                  sx={{ 
+                                    height: '18px',
+                                    fontSize: '9px',
+                                    backgroundColor: getPriorityColor(task.priority),
+                                    color: 'white'
+                                  }}
+                                />
+                                <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                  {task.estimatedHours}h
+                                </Typography>
+                                <Typography sx={{ fontSize: '10px', color: colors.text.secondary }}>
+                                  {task.assignee}
+                                </Typography>
+                              </Box>
+                            }
+                          />
+                        </Box>
+                        <TextField
+                          size="small"
+                          type="number"
+                          value={task.priority}
+                          onChange={(e) => {
+                            setDevelopmentStatus(prev => {
+                              const updated = { ...prev };
+                              updated.backlog.frontend.next[index].priority = parseInt(e.target.value) || 1;
+                              return updated;
+                            });
+                          }}
+                          sx={{ width: 60, '& input': { fontSize: '10px', textAlign: 'center' } }}
+                          inputProps={{ min: 1, max: 10 }}
                         />
                       </ListItem>
                     ))}
