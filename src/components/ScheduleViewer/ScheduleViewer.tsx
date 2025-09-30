@@ -41,8 +41,6 @@ import {
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
 import { WeeklySchedule, ScheduleItem, UserPersona } from '../../types';
 import { ExportService } from '../../services/exportService';
-import { CalendarService } from '../../services/calendarService';
-import { ConflictResolutionService } from '../../services/conflictResolutionService';
 import { CreativeSuggestionsService } from '../../services/creativeSuggestionsService';
 
 interface ScheduleViewerProps {
@@ -59,7 +57,6 @@ const ScheduleViewer: React.FC<ScheduleViewerProps> = ({
   const { colors, helpers } = useDesignSystem();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'day' | 'week' | 'month' | 'year'>('week');
-  const [conflicts, setConflicts] = useState<any>(null);
   const [creativeSuggestion, setCreativeSuggestion] = useState<any>(null);
 
   // Generate mock schedule data if none provided
@@ -484,17 +481,9 @@ const ScheduleViewer: React.FC<ScheduleViewerProps> = ({
     mockScheduleData.days.find(day => isSameDay(new Date(day.date), currentDate)) :
     null;
 
-  // Check for conflicts and get creative suggestions
+  // Get creative suggestions
   useEffect(() => {
     if (mockScheduleData && persona) {
-      // Check for conflicts in current day or week
-      const activitiesToCheck = viewMode === 'day' && selectedDay 
-        ? selectedDay.time_slots 
-        : mockScheduleData.days.flatMap(day => day.time_slots);
-      
-      const conflictAnalysis = ConflictResolutionService.resolveScheduleConflicts(activitiesToCheck);
-      setConflicts(conflictAnalysis);
-
       // Get creative suggestion
       const suggestion = CreativeSuggestionsService.getWeeklySuggestion(persona);
       setCreativeSuggestion(suggestion);
@@ -525,18 +514,78 @@ const ScheduleViewer: React.FC<ScheduleViewerProps> = ({
   console.log('CSV export function available:', handleExportCSV); // Using the function
 
   const handleAddToGoogleCalendar = (activity: ScheduleItem) => {
-    const url = CalendarService.generateGoogleCalendarUrl(activity);
+    // Simple Google Calendar URL generation
+    const startDate = new Date(`${activity.date}T${activity.start_time}:00`);
+    const endDate = new Date(`${activity.date}T${activity.end_time}:00`);
+    const title = encodeURIComponent(activity.activity.name);
+    const details = encodeURIComponent(activity.activity.description);
+    const location = encodeURIComponent(activity.activity.location);
+    
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z&details=${details}&location=${location}`;
     window.open(url, '_blank');
   };
 
   const handleDownloadICS = (activity: ScheduleItem) => {
-    CalendarService.generateICSFile(activity);
+    // Simple ICS file generation
+    const startDate = new Date(`${activity.date}T${activity.start_time}:00`);
+    const endDate = new Date(`${activity.date}T${activity.end_time}:00`);
+    
+    const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//SXP//Schedule//EN
+BEGIN:VEVENT
+UID:${activity.activity.id}@sxp.kervinapps.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART:${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTEND:${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+SUMMARY:${activity.activity.name}
+DESCRIPTION:${activity.activity.description}
+LOCATION:${activity.activity.location}
+END:VEVENT
+END:VCALENDAR`;
+
+    const blob = new Blob([icsContent], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${activity.activity.name.replace(/\s+/g, '_')}.ics`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleDownloadWeeklyICS = () => {
     if (mockScheduleData) {
       const allActivities = mockScheduleData.days.flatMap(day => day.time_slots);
-      CalendarService.generateWeeklyICS(allActivities);
+      let icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//SXP//Weekly Schedule//EN`;
+
+      allActivities.forEach(activity => {
+        const startDate = new Date(`${activity.date}T${activity.start_time}:00`);
+        const endDate = new Date(`${activity.date}T${activity.end_time}:00`);
+        
+        icsContent += `
+BEGIN:VEVENT
+UID:${activity.activity.id}@sxp.kervinapps.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART:${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTEND:${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+SUMMARY:${activity.activity.name}
+DESCRIPTION:${activity.activity.description}
+LOCATION:${activity.activity.location}
+END:VEVENT`;
+      });
+
+      icsContent += `
+END:VCALENDAR`;
+
+      const blob = new Blob([icsContent], { type: 'text/calendar' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `SXP_Weekly_Schedule.ics`;
+      link.click();
+      URL.revokeObjectURL(url);
     }
   };
 
@@ -674,22 +723,6 @@ const ScheduleViewer: React.FC<ScheduleViewerProps> = ({
         </IconButton>
       </Box>
 
-      {/* Conflict Alerts */}
-      {conflicts && conflicts.hasConflicts && (
-        <Paper sx={{ p: 2, mb: 3, backgroundColor: '#FFF3E0', border: '1px solid #FF9800' }}>
-          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#F57C00' }}>
-            <Warning /> Schedule Conflicts Detected
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            {conflicts.conflicts.length} conflict(s) found and automatically resolved:
-          </Typography>
-          {conflicts.resolutionLog.slice(0, 3).map((log: string, index: number) => (
-            <Typography key={index} variant="body2" sx={{ fontSize: '0.85rem', color: 'text.secondary' }}>
-              • {log}
-            </Typography>
-          ))}
-        </Paper>
-      )}
 
       {/* Creative Suggestion */}
       {creativeSuggestion && (
