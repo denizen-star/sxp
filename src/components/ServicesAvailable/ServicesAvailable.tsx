@@ -3,7 +3,7 @@
  * Comprehensive overview of available services and workflows
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -14,7 +14,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider,
   Chip,
   Accordion,
   AccordionSummary,
@@ -47,7 +46,7 @@ const ServicesAvailable: React.FC = () => {
     navigate(link);
   };
 
-  const [services, setServices] = useState<Service[]>([
+  const [services] = useState<Service[]>([
     {
       name: 'Authentication Service',
       description: 'Complete user authentication and authorization system',
@@ -78,7 +77,7 @@ const ServicesAvailable: React.FC = () => {
     }
   ]);
 
-  const [customerJourney, setCustomerJourney] = useState<WorkflowStep[]>([
+  const [customerJourney] = useState<WorkflowStep[]>([
     {
       step: 1,
       title: 'Discovery & Onboarding',
@@ -125,7 +124,7 @@ const ServicesAvailable: React.FC = () => {
     }
   ]);
 
-  const [developerJourney, setDeveloperJourney] = useState<WorkflowStep[]>([
+  const [developerJourney] = useState<WorkflowStep[]>([
     {
       step: 1,
       title: 'Environment Setup',
@@ -172,7 +171,7 @@ const ServicesAvailable: React.FC = () => {
     }
   ]);
 
-  const [adminJourney, setAdminJourney] = useState<WorkflowStep[]>([
+  const [adminJourney] = useState<WorkflowStep[]>([
     {
       step: 1,
       title: 'System Monitoring',
@@ -289,18 +288,6 @@ const ServicesAvailable: React.FC = () => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'active':
-        return '🟢';
-      case 'beta':
-        return '🟡';
-      case 'maintenance':
-        return '🔴';
-      default:
-        return '⚪';
-    }
-  };
 
   return (
     <Box sx={{ p: 3, maxWidth: '1400px', mx: 'auto' }}>

@@ -7,14 +7,9 @@ import React from 'react';
 import {
   Box,
   Typography,
-  Paper,
   Card,
   CardContent,
   Button,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
   Chip
 } from '@mui/material';
 import { ArrowBack, Home } from '@mui/icons-material';

@@ -15,18 +15,13 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider,
   CircularProgress,
   Alert,
   IconButton,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Checkbox,
   TextField
 } from '@mui/material';
-import { Refresh, CheckCircle, Error, Warning, Info, ArrowUpward, ArrowDownward, Star, StarBorder, CheckCircleOutline } from '@mui/icons-material';
+import { Refresh, CheckCircle, Error, Warning, Info, ArrowUpward, ArrowDownward, Star, StarBorder } from '@mui/icons-material';
 import { useDesignSystem } from '../../design-system';
 
 interface AppStatus {
@@ -220,7 +215,7 @@ const DevelopmentTrack: React.FC = () => {
     ]
   });
 
-  const [testResults, setTestResults] = useState<TestResult[]>([
+  const [testResults] = useState<TestResult[]>([
     {
       module: 'Authentication',
       link: '/auth-demo',
