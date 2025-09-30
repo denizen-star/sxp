@@ -236,6 +236,7 @@ realDataService.getRealTestResults(): Promise&lt;RealTestResult[]&gt;</code></pr
     <DocumentationViewer
       title="Real Data Integration"
       content={content}
+      category="Technical"
     />
   );
 };
