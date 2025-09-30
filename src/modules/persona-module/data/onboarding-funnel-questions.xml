@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<onboarding_funnel>
+  <metadata>
+    <title>LifePlanner Onboarding Configuration</title>
+    <description>Comprehensive user onboarding questions for the LifePlanner system</description>
+    <version>1.0</version>
+    <source>lifeplanner/src/features/configuration/configuration_wizard.py</source>
+  </metadata>
+
+  <section id="basic_information" title="Basic Information" icon="👤">
+    <question id="user_name" type="text" required="true">
+      <prompt>Your name</prompt>
+      <default>Kevin</default>
+      <validation>non_empty</validation>
+    </question>
+    
+    <question id="relationship_status" type="select" required="true">
+      <prompt>Current relationship status</prompt>
+      <default>Married</default>
+      <options>
+        <option value="single">Single</option>
+        <option value="part_time_taken">Part-time taken</option>
+        <option value="taken_but_ignore">Taken but ignore them</option>
+        <option value="married">Married</option>
+        <option value="separated">Separated</option>
+        <option value="never_married">Never married</option>
+      </options>
+      <validation>required_select</validation>
+    </question>
+    
+    <question id="partner_name" type="text" required="false">
+      <prompt>Partner's name</prompt>
+      <default>Peter</default>
+      <validation>optional</validation>
+      <conditional_display>
+        <condition>relationship_status != "single" && relationship_status != "never_married"</condition>
+      </conditional_display>
+    </question>
+    
+    <question id="user_gender_identity" type="select" required="true">
+      <prompt>Your gender identity</prompt>
+      <default>Male</default>
+      <options>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="non_binary">Non-binary</option>
+        <option value="prefer_not_to_answer">Prefer not to answer</option>
+      </options>
+      <validation>required_select</validation>
+    </question>
+    
+    <question id="partner_gender_identity" type="select" required="false">
+      <prompt>Partner's gender identity</prompt>
+      <default>Male</default>
+      <options>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="non_binary">Non-binary</option>
+        <option value="prefer_not_to_answer">Prefer not to answer</option>
+      </options>
+      <validation>optional_select</validation>
+      <conditional_display>
+        <condition>relationship_status != "single" && relationship_status != "never_married"</condition>
+      </conditional_display>
+    </question>
+    
+    <question id="user_sexual_orientation" type="select_with_custom" required="true">
+      <prompt>Your sexual orientation</prompt>
+      <default>Gay</default>
+      <options>
+        <option value="heterosexual">Heterosexual/Straight</option>
+        <option value="gay">Gay</option>
+        <option value="lesbian">Lesbian</option>
+        <option value="bisexual">Bisexual</option>
+        <option value="asexual">Asexual</option>
+        <option value="pansexual">Pansexual</option>
+        <option value="queer">Queer</option>
+        <option value="self_describe">I prefer to self-describe</option>
+        <option value="prefer_not_to_say">I prefer not to say</option>
+      </options>
+      <custom_input_field>
+        <condition>value == "self_describe"</condition>
+        <prompt>Please describe:</prompt>
+        <validation>required_when_self_describe</validation>
+      </custom_input_field>
+      <validation>required_select</validation>
+    </question>
+    
+    <question id="partner_sexual_orientation" type="select_with_custom" required="false">
+      <prompt>Partner's sexual orientation</prompt>
+      <default>Gay</default>
+      <options>
+        <option value="heterosexual">Heterosexual/Straight</option>
+        <option value="gay">Gay</option>
+        <option value="lesbian">Lesbian</option>
+        <option value="bisexual">Bisexual</option>
+        <option value="asexual">Asexual</option>
+        <option value="pansexual">Pansexual</option>
+        <option value="queer">Queer</option>
+        <option value="self_describe">I prefer to self-describe</option>
+        <option value="prefer_not_to_say">I prefer not to say</option>
+      </options>
+      <custom_input_field>
+        <condition>value == "self_describe"</condition>
+        <prompt>Please describe:</prompt>
+        <validation>required_when_self_describe</validation>
+      </custom_input_field>
+      <validation>optional_select</validation>
+      <conditional_display>
+        <condition>relationship_status != "single" && relationship_status != "never_married"</condition>
+      </conditional_display>
+    </question>
+  </section>
+
+  <section id="schedule_preferences" title="Schedule Preferences" icon="⏰">
+    <question id="morning_start" type="time" required="true">
+      <prompt>Morning start time (e.g., 6:00 AM)</prompt>
+      <default>6:00 AM</default>
+      <validation>time_format</validation>
+    </question>
+    
+    <question id="bedtime" type="time" required="true">
+      <prompt>Bedtime (e.g., 10:30 PM)</prompt>
+      <default>10:30 PM</default>
+      <validation>time_format</validation>
+    </question>
+  </section>
+
+  <section id="budget_settings" title="Budget Settings" icon="💰">
+    <question id="max_daily_budget" type="currency" required="true">
+      <prompt>Maximum daily budget (CAD)</prompt>
+      <default>200.0</default>
+      <validation>positive_number</validation>
+    </question>
+    
+    <question id="max_weekly_budget" type="currency" required="true">
+      <prompt>Maximum weekly budget (CAD)</prompt>
+      <default>1000.0</default>
+      <validation>positive_number,greater_than_daily</validation>
+    </question>
+  </section>
+
+  <section id="work_schedule" title="Work Hours" icon="💼">
+    <question id="work_start_time" type="time" required="true">
+      <prompt>Work start time</prompt>
+      <default>9:00 AM</default>
+      <validation>time_format</validation>
+    </question>
+    
+    <question id="work_end_time" type="time" required="true">
+      <prompt>Work end time</prompt>
+      <default>6:00 PM</default>
+      <validation>time_format</validation>
+    </question>
+    
+    <question id="work_days" type="multi_select" required="true">
+      <prompt>Work days (comma-separated)</prompt>
+      <default>Monday,Tuesday,Wednesday,Thursday,Friday</default>
+      <options>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+        <option>Sunday</option>
+      </options>
+      <validation>day_names</validation>
+    </question>
+  </section>
+
+  <section id="fitness_routine" title="Fitness Routine" icon="🏃">
+    <description>Running schedule (enter minutes for each day, 0 to skip)</description>
+    
+    <question id="running_monday" type="number" required="false">
+      <prompt>Monday running minutes</prompt>
+      <default>0</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="running_tuesday" type="number" required="false">
+      <prompt>Tuesday running minutes</prompt>
+      <default>60</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="running_wednesday" type="number" required="false">
+      <prompt>Wednesday running minutes</prompt>
+      <default>0</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="running_thursday" type="number" required="false">
+      <prompt>Thursday running minutes</prompt>
+      <default>60</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="running_friday" type="number" required="false">
+      <prompt>Friday running minutes</prompt>
+      <default>60</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="running_saturday" type="number" required="false">
+      <prompt>Saturday running minutes</prompt>
+      <default>0</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="running_sunday" type="number" required="false">
+      <prompt>Sunday running minutes</prompt>
+      <default>120</default>
+      <validation>non_negative_integer</validation>
+    </question>
+
+    <question id="swimming_frequency" type="select" required="false">
+      <prompt>Swimming frequency</prompt>
+      <default>twice_per_month</default>
+      <options>
+        <option value="never">Never</option>
+        <option value="weekly">Weekly</option>
+        <option value="twice_per_month">Twice per month</option>
+        <option value="monthly">Monthly</option>
+      </options>
+    </question>
+
+    <question id="tennis_frequency" type="select" required="false">
+      <prompt>Tennis frequency</prompt>
+      <default>twice_per_month</default>
+      <options>
+        <option value="never">Never</option>
+        <option value="weekly">Weekly</option>
+        <option value="twice_per_month">Twice per month</option>
+        <option value="monthly">Monthly</option>
+      </options>
+    </question>
+  </section>
+
+  <section id="professional_development" title="Other Requirements" icon="📚">
+    <question id="professional_development_hours" type="number" required="false">
+      <prompt>Professional development hours per week</prompt>
+      <default>5</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="immigration_work_hours" type="number" required="false">
+      <prompt>Immigration work hours per week</prompt>
+      <default>3</default>
+      <validation>non_negative_integer</validation>
+    </question>
+  </section>
+
+  <section id="activity_preferences" title="Activity Preferences" icon="🎯">
+    <question id="preferred_activity_types" type="multi_select" required="false">
+      <prompt>Preferred activity types</prompt>
+      <default>social,professional,fitness,cultural</default>
+      <options>
+        <option value="social">Social</option>
+        <option value="professional">Professional</option>
+        <option value="fitness">Fitness</option>
+        <option value="cultural">Cultural</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="educational">Educational</option>
+        <option value="outdoor">Outdoor</option>
+        <option value="creative">Creative</option>
+      </options>
+    </question>
+    
+    <question id="max_activities_per_day" type="number" required="false">
+      <prompt>Maximum activities per day</prompt>
+      <default>6</default>
+      <validation>positive_integer</validation>
+    </question>
+  </section>
+
+  <section id="location_preferences" title="Location Preferences" icon="📍">
+    <question id="preferred_locations" type="multi_select" required="false">
+      <prompt>Preferred locations in Toronto</prompt>
+      <default>Downtown,Entertainment District,Fashion District,Queen West</default>
+      <options>
+        <option value="Downtown">Downtown</option>
+        <option value="Entertainment District">Entertainment District</option>
+        <option value="Fashion District">Fashion District</option>
+        <option value="Queen West">Queen West</option>
+        <option value="King West">King West</option>
+        <option value="Distillery District">Distillery District</option>
+        <option value="Liberty Village">Liberty Village</option>
+        <option value="Junction Triangle">Junction Triangle</option>
+        <option value="Leslieville">Leslieville</option>
+        <option value="Kensington Market">Kensington Market</option>
+      </options>
+    </question>
+  </section>
+
+  <section id="networking_preferences" title="Networking Preferences" icon="🤝">
+    <question id="networking_priority" type="range" required="false">
+      <prompt>Networking priority (1-10 scale)</prompt>
+      <default>7</default>
+      <min>1</min>
+      <max>10</max>
+      <validation>range_1_10</validation>
+    </question>
+    
+    <question id="min_networking_score" type="range" required="false">
+      <prompt>Minimum networking potential for activities (1-10)</prompt>
+      <default>5</default>
+      <min>1</min>
+      <max>10</max>
+      <validation>range_1_10</validation>
+    </question>
+    
+    <question id="min_networking_activities_per_week" type="number" required="false">
+      <prompt>Minimum networking activities per week</prompt>
+      <default>3</default>
+      <validation>non_negative_integer</validation>
+    </question>
+  </section>
+
+  <section id="lifestyle_requirements" title="Lifestyle Requirements" icon="🏠">
+    <question id="meditation_frequency" type="select" required="false">
+      <prompt>Meditation frequency preference</prompt>
+      <default>progressive</default>
+      <options>
+        <option value="never">Never</option>
+        <option value="weekly">Once per week</option>
+        <option value="progressive">Progressive (1x to 5x per week over time)</option>
+        <option value="daily">Daily</option>
+      </options>
+    </question>
+
+    <question id="grocery_shopping_day" type="select" required="false">
+      <prompt>Preferred grocery shopping day</prompt>
+      <default>Saturday</default>
+      <options>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </options>
+    </question>
+
+    <question id="laundry_day" type="select" required="false">
+      <prompt>Preferred laundry day</prompt>
+      <default>Sunday</default>
+      <options>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </options>
+    </question>
+  </section>
+
+  <section id="entertainment_preferences" title="Entertainment Preferences" icon="🎭">
+    <question id="comedy_show_frequency" type="select" required="false">
+      <prompt>Comedy show frequency</prompt>
+      <default>every_two_months</default>
+      <options>
+        <option value="never">Never</option>
+        <option value="monthly">Monthly</option>
+        <option value="every_two_months">Every two months</option>
+        <option value="quarterly">Quarterly</option>
+        <option value="rarely">Rarely</option>
+      </options>
+    </question>
+
+    <question id="show_play_frequency" type="select" required="false">
+      <prompt>Theater/play frequency</prompt>
+      <default>every_two_months</default>
+      <options>
+        <option value="never">Never</option>
+        <option value="monthly">Monthly</option>
+        <option value="every_two_months">Every two months</option>
+        <option value="quarterly">Quarterly</option>
+        <option value="rarely">Rarely</option>
+      </options>
+    </question>
+
+    <question id="drag_show_frequency" type="select" required="false">
+      <prompt>Drag show frequency</prompt>
+      <default>monthly</default>
+      <options>
+        <option value="never">Never</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="every_two_months">Every two months</option>
+        <option value="rarely">Rarely</option>
+      </options>
+    </question>
+  </section>
+
+  <section id="system_preferences" title="System Preferences" icon="⚙️">
+    <question id="time_buffer_minutes" type="number" required="false">
+      <prompt>Time buffer between activities (minutes)</prompt>
+      <default>15</default>
+      <validation>non_negative_integer</validation>
+    </question>
+    
+    <question id="conflict_resolution" type="boolean" required="false">
+      <prompt>Enable automatic conflict resolution</prompt>
+      <default>true</default>
+    </question>
+    
+    <question id="smart_activity_selection" type="boolean" required="false">
+      <prompt>Enable smart activity selection</prompt>
+      <default>true</default>
+    </question>
+    
+    <question id="include_cost_breakdown" type="boolean" required="false">
+      <prompt>Include cost breakdown in schedules</prompt>
+      <default>true</default>
+    </question>
+    
+    <question id="include_networking_scores" type="boolean" required="false">
+      <prompt>Include networking scores</prompt>
+      <default>true</default>
+    </question>
+    
+    <question id="include_creative_suggestions" type="boolean" required="false">
+      <prompt>Include creative activity suggestions</prompt>
+      <default>true</default>
+    </question>
+  </section>
+
+  <validation_rules>
+    <rule name="time_format">
+      <pattern>^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$</pattern>
+      <message>Please use format like '6:00 AM' or '10:30 PM'</message>
+    </rule>
+    
+    <rule name="positive_number">
+      <pattern>^[0-9]+\.?[0-9]*$</pattern>
+      <condition>value > 0</condition>
+      <message>Must be a positive number</message>
+    </rule>
+    
+    <rule name="non_negative_integer">
+      <pattern>^[0-9]+$</pattern>
+      <condition>value >= 0</condition>
+      <message>Must be a non-negative whole number</message>
+    </rule>
+    
+    <rule name="range_1_10">
+      <condition>value >= 1 && value <= 10</condition>
+      <message>Must be between 1 and 10</message>
+    </rule>
+    
+    <rule name="greater_than_daily">
+      <condition>weekly_budget >= daily_budget</condition>
+      <message>Weekly budget must be at least as much as daily budget</message>
+    </rule>
+    
+    <rule name="required_select">
+      <condition>value != null && value != ""</condition>
+      <message>Please select an option</message>
+    </rule>
+    
+    <rule name="optional_select">
+      <condition>true</condition>
+      <message>Optional field</message>
+    </rule>
+    
+    <rule name="required_when_self_describe">
+      <condition>parent_value == "self_describe" ? (value != null && value != "") : true</condition>
+      <message>Please provide a description when selecting 'I prefer to self-describe'</message>
+    </rule>
+  </validation_rules>
+</onboarding_funnel>
