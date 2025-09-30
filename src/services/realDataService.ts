@@ -327,7 +327,7 @@ class RealDataService {
     const type = commitMessage.split(':')[0].toLowerCase();
     const template = changeTypes[type as keyof typeof changeTypes] || changeTypes.update;
 
-    return `What Was Fixed: ${template.fixed}\nWhat Was Added: ${template.added}\nEnhanced Development Status: ${template.status}\nDynamic Testing Results: ${template.tests}\nTechnical Changes: ${template.technical}\nImpact: ${template.impact}`;
+    return `• What Was Fixed: ${template.fixed}\n• What Was Added: ${template.added}\n• Enhanced Development Status: ${template.status}\n• Dynamic Testing Results: ${template.tests}\n• Technical Changes: ${template.technical}\n• Impact: ${template.impact}`;
   }
 
   private generateCommitTitle(commitMessage: string): string {
