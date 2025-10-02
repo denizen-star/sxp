@@ -14,7 +14,9 @@ interface AuthState {
   loading: boolean;
 }
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : 'http://localhost:3001/api';
 
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
