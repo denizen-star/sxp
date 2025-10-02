@@ -18,6 +18,8 @@ import LandingPage from './components/LandingPage/LandingPage';
 import AuthPage from './components/auth/AuthPage';
 import AuthEvents from './components/auth/AuthEvents';
 import AuthGuard from './components/auth/AuthGuard';
+import AdminDashboard from './components/admin/AdminDashboard';
+import UserManagement from './components/admin/UserManagement';
 import { useStore } from './store/useStore';
 import { DesignSystemProvider, useDesignSystem, ModernDropdownMenu } from './design-system';
 import './App.css';
@@ -195,6 +197,22 @@ function AppContent() {
               <Route 
                 path="/auth-events" 
                 element={<AuthEvents />} 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <AuthGuard>
+                    <AdminDashboard />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/admin/users" 
+                element={
+                  <AuthGuard>
+                    <UserManagement />
+                  </AuthGuard>
+                } 
               />
               <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

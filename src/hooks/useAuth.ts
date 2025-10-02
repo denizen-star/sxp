@@ -306,8 +306,12 @@ export const useAuth = () => {
     }
   };
 
+  // Check if current user is admin
+  const isAdmin = authState.user?.email === 'admin@sxp.com' || authState.user?.email === 'optimumoptimizer@gmail.com';
+
   return {
     ...authState,
+    isAdmin,
     login,
     register,
     logout

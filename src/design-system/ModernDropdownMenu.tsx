@@ -50,7 +50,7 @@ const ModernDropdownMenu: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { colors, spacing, transitions } = useDesignSystem();
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
   const [anchorEl, setAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({});
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -128,8 +128,35 @@ const ModernDropdownMenu: React.FC = () => {
           description: 'Authentication activity tracking' 
         }
       ]
+    },
+    {
+      id: 'admin',
+      label: 'Administration',
+      description: 'Admin tools and user management',
+      items: [
+        { 
+          id: 'dashboard', 
+          label: 'Admin Dashboard', 
+          path: '/admin', 
+          description: 'System overview and statistics' 
+        },
+        { 
+          id: 'users', 
+          label: 'User Management', 
+          path: '/admin/users', 
+          description: 'Manage users and permissions' 
+        }
+      ]
     }
   ];
+
+  // Filter menu categories based on user permissions
+  const filteredMenuCategories = menuCategories.filter(category => {
+    if (category.id === 'admin') {
+      return isAdmin; // Only show admin category to admin users
+    }
+    return true; // Show all other categories
+  });
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, categoryId: string) => {
     if (timeoutRef.current) {
@@ -222,7 +249,7 @@ const ModernDropdownMenu: React.FC = () => {
         });
       }}
     >
-      {menuCategories.map((category) => (
+      {filteredMenuCategories.map((category) => (
         <Box 
           key={category.id}
           onMouseEnter={(e) => {
@@ -432,7 +459,7 @@ const ModernDropdownMenu: React.FC = () => {
         }}
         sx={{ display: { xs: 'block', md: 'none' } }}
       >
-        {menuCategories.map((category, categoryIndex) => (
+        {filteredMenuCategories.map((category, categoryIndex) => (
           <Box key={category.id}>
             {/* Category Header */}
             <Box sx={{ 
@@ -517,7 +544,7 @@ const ModernDropdownMenu: React.FC = () => {
               </MenuItem>
             ))}
 
-            {categoryIndex < menuCategories.length - 1 && (
+            {categoryIndex < filteredMenuCategories.length - 1 && (
               <Divider sx={{ my: 1 }} />
             )}
           </Box>
