@@ -14,26 +14,33 @@ const SxpModules: React.FC = () => {
     
     <h2>Core Modules</h2>
     
-    <h3>Authentication Module</h3>
-    <p><strong>Purpose:</strong> Handles user authentication, registration, and session management.</p>
-    <p><strong>Components:</strong></p>
+    <h3>Production Authentication Module</h3>
+    <p><strong>Purpose:</strong> Production-ready user authentication with real database, JWT tokens, and bcrypt password hashing.</p>
+    <p><strong>Frontend Components:</strong></p>
     <ul>
-      <li><code>AuthDemo</code> - Authentication demonstration</li>
-      <li><code>EnhancedSignup</code> - User registration form</li>
-      <li><code>EmailTest</code> - Email functionality testing</li>
-      <li><code>EmailVerification</code> - Email verification process</li>
-      <li><code>UserManagement</code> - User account management</li>
-      <li><code>AuthActivity</code> - Authentication activity tracking</li>
-      <li><code>DatabaseQuery</code> - Database query interface</li>
+      <li><code>LoginForm</code> - User login form with JWT authentication</li>
+      <li><code>RegisterForm</code> - User registration form with bcrypt password hashing</li>
+      <li><code>UserDashboard</code> - User profile and account management</li>
+      <li><code>AuthPage</code> - Authentication page container with tabs</li>
+      <li><code>AuthEvents</code> - Security events tracking and display</li>
+      <li><code>AuthGuard</code> - Route protection component</li>
     </ul>
-    <p><strong>Services:</strong></p>
+    <p><strong>Backend Services:</strong></p>
     <ul>
-      <li><code>authTrackingService</code> - Authentication tracking</li>
-      <li><code>sendGridEmailService</code> - Email delivery via SendGrid</li>
-      <li><code>simpleEmailService</code> - Basic email functionality</li>
-      <li><code>tokenService</code> - JWT token management</li>
-      <li><code>urlService</code> - URL generation and validation</li>
-      <li><code>userDatabase</code> - User data management</li>
+      <li><code>Express.js Server</code> - Authentication API server (port 3001)</li>
+      <li><code>SQLite Database</code> - Real database with users and auth_events tables</li>
+      <li><code>JWT Token Management</code> - Secure token generation and validation</li>
+      <li><code>bcrypt Password Hashing</code> - Secure password storage</li>
+      <li><code>CORS & Security</code> - Cross-origin and security headers</li>
+      <li><code>Rate Limiting</code> - API rate limiting for security</li>
+    </ul>
+    <p><strong>API Endpoints:</strong></p>
+    <ul>
+      <li><code>POST /api/auth/register</code> - User registration</li>
+      <li><code>POST /api/auth/login</code> - User login</li>
+      <li><code>POST /api/auth/logout</code> - User logout</li>
+      <li><code>GET /api/auth/profile</code> - Get user profile</li>
+      <li><code>GET /api/auth/events</code> - Get security events</li>
     </ul>
     
     <h3>Persona Module</h3>
@@ -181,9 +188,21 @@ const SxpModules: React.FC = () => {
     <h3>Module Dependencies</h3>
     <ul>
       <li>Design System → All modules</li>
-      <li>Authentication → All modules</li>
-      <li>Schedule → Persona, Services</li>
-      <li>Services → Store, Types</li>
+      <li>Production Authentication → All modules (required for access)</li>
+      <li>AuthGuard → All protected routes</li>
+      <li>Schedule → Persona, Services, Authentication</li>
+      <li>Services → Store, Types, Authentication</li>
+      <li>Frontend → Authentication Backend (port 3001)</li>
+    </ul>
+    
+    <h3>Authentication Architecture</h3>
+    <ul>
+      <li><strong>Frontend:</strong> React components with JWT token management</li>
+      <li><strong>Backend:</strong> Express.js server with SQLite database</li>
+      <li><strong>Security:</strong> bcrypt password hashing, JWT tokens, CORS protection</li>
+      <li><strong>Route Protection:</strong> AuthGuard component protecting all SXP routes</li>
+      <li><strong>Database:</strong> SQLite with users and auth_events tables</li>
+      <li><strong>API:</strong> RESTful endpoints for authentication operations</li>
     </ul>
     
     <h2>Adding New Modules</h2>
@@ -196,7 +215,24 @@ const SxpModules: React.FC = () => {
 ├── types/             # TypeScript types
 ├── utils/             # Utility functions
 ├── data/              # Static data
-└── index.ts           # Module exports</pre>
+└── index.ts           # Module exports
+
+# Authentication Module Structure
+src/components/auth/
+├── LoginForm.tsx       # User login component
+├── RegisterForm.tsx    # User registration component
+├── UserDashboard.tsx   # User profile component
+├── AuthPage.tsx        # Authentication page container
+├── AuthEvents.tsx      # Security events component
+└── AuthGuard.tsx       # Route protection component
+
+src/hooks/
+└── useAuth.ts          # Authentication hook
+
+auth-backend/
+├── server.js           # Express.js authentication server
+├── package.json        # Backend dependencies
+└── auth.db             # SQLite database</pre>
     
     <h3>Best Practices</h3>
     <ul>

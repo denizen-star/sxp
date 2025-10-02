@@ -70,28 +70,42 @@ const ServicesAvailable: React.FC = () => {
   const [services] = useState<Service[]>([
     {
       name: 'Authentication Service',
-      description: 'Complete user authentication and authorization system',
+      description: 'Authentication system with SQLite database, JWT tokens, and bcrypt password hashing - Backend running on port 3001',
       status: 'active',
-      endpoints: ['/auth/login', '/auth/register', '/auth/verify', '/auth/reset'],
-      documentation: '/docs/authentication'
+      endpoints: ['/api/auth/register', '/api/auth/login', '/api/auth/logout', '/api/auth/profile', '/api/auth/events'],
+      documentation: '/auth'
     },
     {
       name: 'User Management Service',
-      description: 'User profile and account management',
+      description: 'User profile and account management implemented with SQLite database persistence',
       status: 'active',
-      endpoints: ['/users/profile', '/users/update', '/users/delete'],
-      documentation: '/docs/user-management'
+      endpoints: ['/api/auth/profile', '/api/auth/events', '/auth-events'],
+      documentation: '/auth'
+    },
+    {
+      name: 'Route Protection Service',
+      description: 'AuthGuard component implemented protecting all SXP application routes',
+      status: 'active',
+      endpoints: ['All protected routes require authentication'],
+      documentation: '/auth'
+    },
+    {
+      name: 'Database Service',
+      description: 'SQLite database implemented with user management and security events tracking',
+      status: 'active',
+      endpoints: ['SQLite database operations', 'User CRUD operations', 'Security events logging'],
+      documentation: '/auth-events'
     },
     {
       name: 'Schedule Service',
-      description: 'Schedule creation and optimization',
+      description: 'Basic schedule viewer implemented - Advanced features pending development',
       status: 'beta',
       endpoints: ['/schedule/create', '/schedule/optimize', '/schedule/export'],
       documentation: '/docs/schedule'
     },
     {
       name: 'Analytics Service',
-      description: 'Usage analytics and reporting',
+      description: 'Basic activity tracking implemented - Advanced analytics pending development',
       status: 'beta',
       endpoints: ['/analytics/usage', '/analytics/reports'],
       documentation: '/docs/analytics'
@@ -101,12 +115,12 @@ const ServicesAvailable: React.FC = () => {
   const [customerJourney] = useState<WorkflowStep[]>([
     {
       step: 1,
-      title: 'Discovery & Onboarding',
-      description: 'Customer discovers the platform and creates an account',
+      title: 'Authentication & Onboarding',
+      description: 'Customer creates account and authenticates with SQLite database system',
       actions: [
-        'Visit landing page',
-        'Select persona type',
-        'Create account with email verification',
+        'Visit landing page (redirected to /auth if not authenticated)',
+        'Register new account with SQLite database',
+        'Login with JWT token authentication',
         'Complete onboarding questionnaire'
       ]
     },
@@ -244,27 +258,27 @@ const ServicesAvailable: React.FC = () => {
       category: 'Development',
       commands: [
         'npm install - Install all dependencies',
-        'npm start - Start development server',
+        'npm start - Start development server (port 3000)',
         'npm run build - Build for production',
         'npm test - Run test suite'
       ]
     },
     {
-      category: 'Database',
+      category: 'Authentication Backend',
       commands: [
-        'npm run db:migrate - Run database migrations',
-        'npm run db:seed - Seed database with test data',
-        'npm run db:reset - Reset database',
-        'npm run db:backup - Create database backup'
+        'cd auth-backend && npm install - Install auth dependencies',
+        'cd auth-backend && node server.js - Start auth server (port 3001)',
+        'curl http://localhost:3001/api/auth/profile - Test auth API',
+        'Check auth.db for user data'
       ]
     },
     {
-      category: 'Deployment',
+      category: 'Production Deployment',
       commands: [
-        'npm run deploy:staging - Deploy to staging',
-        'npm run deploy:production - Deploy to production',
-        'npm run health:check - Check system health',
-        'npm run logs:view - View application logs'
+        'npm run build - Build frontend',
+        'serve -s build -l 3004 - Serve production build',
+        'cd auth-backend && node server.js - Start auth backend',
+        'Check http://localhost:3004 for app'
       ]
     }
   ];
@@ -272,11 +286,17 @@ const ServicesAvailable: React.FC = () => {
   const projectStructure = realData ? {
     'src/': {
       'components/': { description: 'React components organized by feature', fileCount: realData.devStatus?.commits?.length || 0 },
-      'modules/': { description: 'Feature modules with their own structure', fileCount: 3 },
+      'components/auth/': { description: 'Authentication components (LoginForm, RegisterForm, AuthGuard)', fileCount: 6 },
+      'hooks/': { description: 'Custom React hooks (useAuth)', fileCount: 1 },
       'services/': { description: 'Business logic and API services', fileCount: 5 },
       'design-system/': { description: 'Reusable UI components and theme', fileCount: 15 },
       'store/': { description: 'State management (Zustand)', fileCount: 1 },
       'types/': { description: 'TypeScript type definitions', fileCount: 1 }
+    },
+    'auth-backend/': {
+      'server.js': { description: 'Express.js authentication server', fileCount: 1 },
+      'package.json': { description: 'Backend dependencies (Express, SQLite, JWT, bcrypt)', fileCount: 1 },
+      'auth.db': { description: 'SQLite database with users and auth_events tables', fileCount: 1 }
     },
     'docs/': {
       'api-documentation.md': { description: 'Complete API documentation', fileCount: 1 },
@@ -298,11 +318,17 @@ const ServicesAvailable: React.FC = () => {
   } : {
     'src/': {
       'components/': { description: 'React components organized by feature', fileCount: 0 },
-      'modules/': { description: 'Feature modules with their own structure', fileCount: 0 },
+      'components/auth/': { description: 'Authentication components (LoginForm, RegisterForm, AuthGuard)', fileCount: 6 },
+      'hooks/': { description: 'Custom React hooks (useAuth)', fileCount: 1 },
       'services/': { description: 'Business logic and API services', fileCount: 0 },
       'design-system/': { description: 'Reusable UI components and theme', fileCount: 0 },
       'store/': { description: 'State management (Zustand)', fileCount: 0 },
       'types/': { description: 'TypeScript type definitions', fileCount: 0 }
+    },
+    'auth-backend/': {
+      'server.js': { description: 'Express.js authentication server', fileCount: 1 },
+      'package.json': { description: 'Backend dependencies (Express, SQLite, JWT, bcrypt)', fileCount: 1 },
+      'auth.db': { description: 'SQLite database with users and auth_events tables', fileCount: 1 }
     },
     'docs/': {
       'api-documentation.md': { description: 'Complete API documentation', fileCount: 0 },

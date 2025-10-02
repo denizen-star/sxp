@@ -11,6 +11,10 @@ Welcome to the SXP (Social Experiment Application) documentation. This folder co
 
 ### **Technical Documentation**
 - [API Documentation](./api-documentation.md) - API endpoints and integration guides
+- [Authentication Index](./authentication-index.md) - Complete authentication documentation index
+- [Authentication Module](./authentication-module.md) - Production authentication system documentation
+- [Authentication Components](./authentication-components.md) - React components documentation
+- [Authentication Quick Reference](./authentication-quick-reference.md) - Quick start guide for authentication
 - [Database Schema](./database-schema.md) - Database design and relationships
 - [Authentication Guide](./authentication-guide.md) - Authentication system documentation
 - [Design System](./design-system.md) - UI/UX design system and components
@@ -44,6 +48,6 @@ For questions about SXP development or documentation, please refer to the releva
 
 ---
 
-**Last Updated:** December 19, 2024
+**Last Updated:** January 2, 2025
 **Version:** 1.0.0
 **Status:** Development
