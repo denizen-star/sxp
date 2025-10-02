@@ -65,18 +65,13 @@ const UserManagement: React.FC = () => {
   // Check if current user is admin
   const isAdmin = user?.email === 'admin@sxp.com' || user?.email === 'optimumoptimizer@gmail.com';
 
-  useEffect(() => {
-    if (isAdmin) {
-      loadUsers();
-    } else {
-      setError('Access denied. Admin privileges required.');
-      setLoading(false);
-    }
-  }, [isAdmin]);
-
-  useEffect(() => {
-    filterUsers();
-  }, [filterUsers]);
+  const filterUsers = useCallback(() => {
+    const filtered = users.filter(user => 
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  }, [users, searchTerm]);
 
   const loadUsers = () => {
     try {
@@ -90,13 +85,18 @@ const UserManagement: React.FC = () => {
     }
   };
 
-  const filterUsers = useCallback(() => {
-    const filtered = users.filter(user => 
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-  }, [users, searchTerm]);
+  useEffect(() => {
+    if (isAdmin) {
+      loadUsers();
+    } else {
+      setError('Access denied. Admin privileges required.');
+      setLoading(false);
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
+    filterUsers();
+  }, [filterUsers]);
 
   const handleEditUser = (user: User) => {
     setEditingUser({ ...user });
