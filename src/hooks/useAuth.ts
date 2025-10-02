@@ -15,7 +15,7 @@ interface AuthState {
 }
 
 const API_BASE = process.env.NODE_ENV === 'production' 
-  ? '/api' 
+  ? '/.netlify/functions/auth/api' 
   : 'http://localhost:3001/api';
 
 export const useAuth = () => {
