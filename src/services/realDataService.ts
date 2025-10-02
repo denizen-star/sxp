@@ -2,7 +2,7 @@
  * Real Data Service - Integration with actual development data sources
  */
 
-import { gitService } from './gitService';
+// import { gitService } from './gitService'; // Currently unused
 
 export interface RealAppStatus {
   online: boolean;
