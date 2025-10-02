@@ -41,18 +41,28 @@ const AuthEvents: React.FC = () => {
         return;
       }
 
-      const response = await fetch('http://localhost:3001/api/auth/events', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setEvents(data);
+      // Check if we're in production (no API_BASE) or development
+      const isProduction = process.env.NODE_ENV === 'production';
+      
+      if (isProduction) {
+        // Use localStorage for production
+        const events = JSON.parse(localStorage.getItem('sxp_auth_events') || '[]');
+        setEvents(events);
       } else {
-        setError('Failed to load events');
+        // Use backend API for development
+        const response = await fetch('http://localhost:3001/api/auth/events', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data);
+        } else {
+          setError('Failed to load events');
+        }
       }
     } catch (err) {
       setError('Connection error');

@@ -151,6 +151,19 @@ export const useAuth = () => {
         
         const token = btoa(JSON.stringify({ userId: user.id, email: user.email }));
         localStorage.setItem('sxp_auth_token', token);
+        
+        // Log authentication event
+        const events = JSON.parse(localStorage.getItem('sxp_auth_events') || '[]');
+        events.push({
+          id: events.length + 1,
+          user_id: user.id,
+          action: 'login',
+          timestamp: new Date().toISOString(),
+          ip_address: 'unknown',
+          success: true
+        });
+        localStorage.setItem('sxp_auth_events', JSON.stringify(events));
+        
         setAuthState({
           user: {
             id: user.id,
@@ -217,6 +230,19 @@ export const useAuth = () => {
         
         const token = btoa(JSON.stringify({ userId: newUser.id, email: newUser.email }));
         localStorage.setItem('sxp_auth_token', token);
+        
+        // Log authentication event
+        const events = JSON.parse(localStorage.getItem('sxp_auth_events') || '[]');
+        events.push({
+          id: events.length + 1,
+          user_id: newUser.id,
+          action: 'register',
+          timestamp: new Date().toISOString(),
+          ip_address: 'unknown',
+          success: true
+        });
+        localStorage.setItem('sxp_auth_events', JSON.stringify(events));
+        
         setAuthState({
           user: {
             id: newUser.id,
@@ -240,13 +266,33 @@ export const useAuth = () => {
     try {
       const token = localStorage.getItem('sxp_auth_token');
       if (token) {
-        await fetch(`${API_BASE}/auth/logout`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+        if (API_BASE) {
+          // Use backend API for development
+          await fetch(`${API_BASE}/auth/logout`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+        } else {
+          // Log logout event for production
+          try {
+            const payload = JSON.parse(atob(token));
+            const events = JSON.parse(localStorage.getItem('sxp_auth_events') || '[]');
+            events.push({
+              id: events.length + 1,
+              user_id: payload.userId,
+              action: 'logout',
+              timestamp: new Date().toISOString(),
+              ip_address: 'unknown',
+              success: true
+            });
+            localStorage.setItem('sxp_auth_events', JSON.stringify(events));
+          } catch (e) {
+            // Token is invalid, continue with logout
           }
-        });
+        }
       }
     } catch (error) {
       console.error('Logout error:', error);
