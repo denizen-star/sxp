@@ -37,22 +37,7 @@ import {
   Analytics as AnalyticsIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  createdAt: string;
-  isAdmin?: boolean;
-}
-
-interface AdminStats {
-  totalUsers: number;
-  adminUsers: number;
-  regularUsers: number;
-  recentLogins: number;
-}
+import { adminService, User, AdminStats } from '../../services/adminService';
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -64,7 +49,7 @@ const AdminDashboard: React.FC = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const [editingUser, setEditingUser] = useState<Partial<User>>({});
+  const [editingUser, setEditingUser] = useState<Partial<User & { password?: string }>>({});
 
   // Check if current user is admin
   const isAdmin = user?.email === 'admin@sxp.com' || user?.email === 'optimumoptimizer@gmail.com';
@@ -78,27 +63,15 @@ const AdminDashboard: React.FC = () => {
     }
   }, [isAdmin]);
 
-  const loadUsers = () => {
+  const loadUsers = async () => {
     try {
-      const usersData = JSON.parse(localStorage.getItem('sxp_users') || '[]');
+      const [usersData, statsData] = await Promise.all([
+        adminService.getUsers(),
+        adminService.getAdminStats()
+      ]);
+      
       setUsers(usersData);
-      
-      // Calculate stats
-      const totalUsers = usersData.length;
-      const adminUsers = usersData.filter((u: User) => u.email === 'admin@sxp.com' || u.email === 'optimumoptimizer@gmail.com').length;
-      const regularUsers = totalUsers - adminUsers;
-      
-      // Get recent login events
-      const events = JSON.parse(localStorage.getItem('sxp_auth_events') || '[]');
-      const recentLogins = events.filter((e: any) => e.action === 'login' && 
-        new Date(e.timestamp) > new Date(Date.now() - 24 * 60 * 60 * 1000)).length;
-      
-      setStats({
-        totalUsers,
-        adminUsers,
-        regularUsers,
-        recentLogins
-      });
+      setStats(statsData);
     } catch (error) {
       console.error('Error loading users:', error);
       setError('Failed to load users');
@@ -119,31 +92,38 @@ const AdminDashboard: React.FC = () => {
     setMenuAnchor(null);
   };
 
-  const saveUser = () => {
+  const saveUser = async () => {
     try {
-      const usersData = JSON.parse(localStorage.getItem('sxp_users') || '[]');
-      const userIndex = usersData.findIndex((u: User) => u.id === editingUser.id);
-      
-      if (userIndex !== -1) {
-        usersData[userIndex] = { ...usersData[userIndex], ...editingUser };
-        localStorage.setItem('sxp_users', JSON.stringify(usersData));
-        loadUsers();
-        setEditDialogOpen(false);
-        setEditingUser({});
+      if (editingUser.id) {
+        // Update existing user
+        await adminService.updateUser(editingUser.id, {
+          name: editingUser.name || '',
+          email: editingUser.email || '',
+          password: editingUser.password
+        });
+      } else {
+        // Create new user
+        await adminService.createUser({
+          name: editingUser.name || '',
+          email: editingUser.email || '',
+          password: editingUser.password || ''
+        });
       }
+      
+      loadUsers();
+      setEditDialogOpen(false);
+      setEditingUser({});
     } catch (error) {
       console.error('Error saving user:', error);
       setError('Failed to save user');
     }
   };
 
-  const deleteUser = () => {
+  const deleteUser = async () => {
     if (!selectedUser) return;
     
     try {
-      const usersData = JSON.parse(localStorage.getItem('sxp_users') || '[]');
-      const filteredUsers = usersData.filter((u: User) => u.id !== selectedUser.id);
-      localStorage.setItem('sxp_users', JSON.stringify(filteredUsers));
+      await adminService.deleteUser(selectedUser.id);
       loadUsers();
       setDeleteDialogOpen(false);
       setSelectedUser(null);

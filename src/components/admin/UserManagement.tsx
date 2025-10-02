@@ -39,15 +39,7 @@ import {
   Lock as LockIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  createdAt: string;
-  isAdmin?: boolean;
-}
+import { adminService, User } from '../../services/adminService';
 
 const UserManagement: React.FC = () => {
   const { user } = useAuth();
@@ -60,7 +52,7 @@ const UserManagement: React.FC = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const [editingUser, setEditingUser] = useState<Partial<User>>({});
+  const [editingUser, setEditingUser] = useState<Partial<User & { password?: string }>>({});
 
   // Check if current user is admin
   const isAdmin = user?.email === 'admin@sxp.com' || user?.email === 'optimumoptimizer@gmail.com';
@@ -73,9 +65,9 @@ const UserManagement: React.FC = () => {
     setFilteredUsers(filtered);
   }, [users, searchTerm]);
 
-  const loadUsers = () => {
+  const loadUsers = async () => {
     try {
-      const usersData = JSON.parse(localStorage.getItem('sxp_users') || '[]');
+      const usersData = await adminService.getUsers();
       setUsers(usersData);
     } catch (error) {
       console.error('Error loading users:', error);
@@ -110,29 +102,24 @@ const UserManagement: React.FC = () => {
     setMenuAnchor(null);
   };
 
-  const saveUser = () => {
+  const saveUser = async () => {
     try {
-      const usersData = JSON.parse(localStorage.getItem('sxp_users') || '[]');
-      
       if (editingUser.id) {
         // Update existing user
-        const userIndex = usersData.findIndex((u: User) => u.id === editingUser.id);
-        if (userIndex !== -1) {
-          usersData[userIndex] = { ...usersData[userIndex], ...editingUser };
-        }
-      } else {
-        // Create new user
-        const newUser = {
-          id: Math.max(...usersData.map((u: User) => u.id), 0) + 1,
+        await adminService.updateUser(editingUser.id, {
           name: editingUser.name || '',
           email: editingUser.email || '',
-          password: editingUser.password || '',
-          createdAt: new Date().toISOString()
-        };
-        usersData.push(newUser);
+          password: editingUser.password
+        });
+      } else {
+        // Create new user
+        await adminService.createUser({
+          name: editingUser.name || '',
+          email: editingUser.email || '',
+          password: editingUser.password || ''
+        });
       }
       
-      localStorage.setItem('sxp_users', JSON.stringify(usersData));
       loadUsers();
       setEditDialogOpen(false);
       setEditingUser({});
@@ -142,13 +129,11 @@ const UserManagement: React.FC = () => {
     }
   };
 
-  const deleteUser = () => {
+  const deleteUser = async () => {
     if (!selectedUser) return;
     
     try {
-      const usersData = JSON.parse(localStorage.getItem('sxp_users') || '[]');
-      const filteredUsers = usersData.filter((u: User) => u.id !== selectedUser.id);
-      localStorage.setItem('sxp_users', JSON.stringify(filteredUsers));
+      await adminService.deleteUser(selectedUser.id);
       loadUsers();
       setDeleteDialogOpen(false);
       setSelectedUser(null);

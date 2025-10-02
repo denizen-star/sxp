@@ -262,6 +262,10 @@ app.get('/api/auth/events', authenticateToken, (req, res) => {
   });
 });
 
+// User management routes (admin only)
+const usersRouter = require('./routes/users');
+app.use('/api/users', usersRouter);
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 SXP Auth Server running on port ${PORT}`);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { adminService } from '../services/adminService';
 
 interface User {
   id: number;
@@ -151,6 +152,7 @@ export const useAuth = () => {
         
         const token = btoa(JSON.stringify({ userId: user.id, email: user.email }));
         localStorage.setItem('sxp_auth_token', token);
+        adminService.updateToken(token);
         
         // Log authentication event
         const events = JSON.parse(localStorage.getItem('sxp_auth_events') || '[]');
@@ -230,6 +232,7 @@ export const useAuth = () => {
         
         const token = btoa(JSON.stringify({ userId: newUser.id, email: newUser.email }));
         localStorage.setItem('sxp_auth_token', token);
+        adminService.updateToken(token);
         
         // Log authentication event
         const events = JSON.parse(localStorage.getItem('sxp_auth_events') || '[]');
@@ -298,6 +301,7 @@ export const useAuth = () => {
       console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('sxp_auth_token');
+      adminService.updateToken(null);
       setAuthState({
         user: null,
         isAuthenticated: false,
