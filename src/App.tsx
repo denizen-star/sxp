@@ -15,8 +15,9 @@ import FAQ from './components/DocumentationPages/FAQ';
 import SxpModules from './components/DocumentationPages/SxpModules';
 import RealDataIntegration from './components/DocumentationPages/RealDataIntegration';
 import LandingPage from './components/LandingPage/LandingPage';
-import { AuthDemo, EnhancedSignup, EmailTest, EmailVerification, UserManagement, AuthActivity } from './modules/authentication-module';
-import DatabaseQuery from './modules/authentication-module/components/DatabaseQuery/DatabaseQuery';
+import AuthPage from './components/auth/AuthPage';
+import AuthEvents from './components/auth/AuthEvents';
+import AuthGuard from './components/auth/AuthGuard';
 import { useStore } from './store/useStore';
 import { DesignSystemProvider, useDesignSystem, ModernDropdownMenu } from './design-system';
 import './App.css';
@@ -64,116 +65,136 @@ function AppContent() {
         <Routes>
               <Route 
                 path="/" 
-                element={<LandingPage />} 
+                element={
+                  <AuthGuard>
+                    <LandingPage />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/personas" 
                 element={
-                  <PersonaSelector
-                    personas={personas}
-                    selectedPersona={selectedPersona}
-                    onPersonaSelect={handlePersonaSelect}
-                    loading={isLoading}
-                  />
+                  <AuthGuard>
+                    <PersonaSelector
+                      personas={personas}
+                      selectedPersona={selectedPersona}
+                      onPersonaSelect={handlePersonaSelect}
+                      loading={isLoading}
+                    />
+                  </AuthGuard>
                 } 
               />
               <Route 
                 path="/development-track" 
-                element={<DevelopmentTrack />} 
+                element={
+                  <AuthGuard>
+                    <DevelopmentTrack />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/services-available" 
-                element={<ServicesAvailable />} 
+                element={
+                  <AuthGuard>
+                    <ServicesAvailable />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/api-documentation" 
-                element={<ApiDocumentation />} 
+                element={
+                  <AuthGuard>
+                    <ApiDocumentation />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/user-guide" 
-                element={<UserGuide />} 
+                element={
+                  <AuthGuard>
+                    <UserGuide />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/setup-guide" 
-                element={<SetupGuide />} 
+                element={
+                  <AuthGuard>
+                    <SetupGuide />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/deployment-guide" 
-                element={<DeploymentGuide />} 
+                element={
+                  <AuthGuard>
+                    <DeploymentGuide />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/development-status" 
-                element={<DevelopmentStatus />} 
+                element={
+                  <AuthGuard>
+                    <DevelopmentStatus />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/contributing-guide" 
-                element={<ContributingGuide />} 
+                element={
+                  <AuthGuard>
+                    <ContributingGuide />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/faq" 
-                element={<FAQ />} 
+                element={
+                  <AuthGuard>
+                    <FAQ />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/sxp-modules" 
-                element={<SxpModules />} 
+                element={
+                  <AuthGuard>
+                    <SxpModules />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/docs/real-data-integration" 
-                element={<RealDataIntegration />} 
+                element={
+                  <AuthGuard>
+                    <RealDataIntegration />
+                  </AuthGuard>
+                } 
               />
               <Route 
                 path="/schedule" 
                 element={
-                  selectedPersona ? (
-                    <ScheduleViewer
-                      schedule={currentSchedule}
-                      persona={selectedPersona}
-                      loading={isLoading}
-                    />
-                  ) : (
-                    <Navigate to="/" replace />
-                  )
+                  <AuthGuard>
+                    {selectedPersona ? (
+                      <ScheduleViewer
+                        schedule={currentSchedule}
+                        persona={selectedPersona}
+                        loading={isLoading}
+                      />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )}
+                  </AuthGuard>
                 } 
               />
               <Route 
-                path="/auth-activity" 
-                element={
-                  selectedPersona ? (
-                    <AuthActivity showStats={true} maxEvents={100} />
-                  ) : (
-                    <Navigate to="/" replace />
-                  )
-                } 
+                path="/auth" 
+                element={<AuthPage />} 
               />
               <Route 
-                path="/auth-demo" 
-                element={<AuthDemo />} 
-              />
-              <Route 
-                path="/signup" 
-                element={<EnhancedSignup />} 
-              />
-              <Route 
-                path="/email-test" 
-                element={<EmailTest />} 
-              />
-              <Route 
-                path="/verify-email/:token" 
-                element={<EmailVerification />} 
-              />
-              <Route 
-                path="/users" 
-                element={
-                  selectedPersona ? (
-                    <UserManagement />
-                  ) : (
-                    <Navigate to="/" replace />
-                  )
-                } 
-              />
-              <Route 
-                path="/database-query" 
-                element={<DatabaseQuery />} 
+                path="/auth-events" 
+                element={<AuthEvents />} 
               />
               <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

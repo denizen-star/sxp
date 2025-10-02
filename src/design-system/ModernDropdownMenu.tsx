@@ -20,10 +20,13 @@ import {
 import {
   Home,
   Menu as MenuIcon,
-  Close
+  Close,
+  Logout as LogoutIcon,
+  Person as PersonIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDesignSystem } from './hooks';
+import { useAuth } from '../hooks/useAuth';
 
 interface MenuCategory {
   id: string;
@@ -47,6 +50,7 @@ const ModernDropdownMenu: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { colors, spacing, transitions } = useDesignSystem();
+  const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({});
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -104,55 +108,24 @@ const ModernDropdownMenu: React.FC = () => {
           description: 'Available services and workflows',
           badge: 'New'
         },
-        { 
-          id: 'tests', 
-          label: 'Test Suite', 
-          path: '/auth-demo', 
-          description: 'Authentication and testing tools' 
-        }
-      ]
-    },
-    {
-      id: 'admin',
-      label: 'Administration',
-      description: 'Admin and security tools',
-      items: [
-        { 
-          id: 'security', 
-          label: 'Security Monitor', 
-          path: '/auth-activity', 
-          description: 'Authentication activity tracking' 
-        },
-        { 
-          id: 'users', 
-          label: 'User Management', 
-          path: '/users', 
-          description: 'Manage user accounts and permissions' 
-        },
-        { 
-          id: 'database', 
-          label: 'Database Tools', 
-          path: '/database-query', 
-          description: 'Database query and management tools' 
-        }
       ]
     },
     {
       id: 'auth',
       label: 'Authentication',
-      description: 'User authentication and accounts',
+      description: 'User authentication and security',
       items: [
         { 
-          id: 'signup', 
-          label: 'Create Account', 
-          path: '/signup', 
-          description: 'Register a new user account' 
+          id: 'login', 
+          label: 'Sign In / Register', 
+          path: '/auth', 
+          description: 'User authentication system' 
         },
         { 
-          id: 'login', 
-          label: 'Sign In', 
-          path: '/auth-demo', 
-          description: 'Access your account' 
+          id: 'events', 
+          label: 'Security Events', 
+          path: '/auth-events', 
+          description: 'Authentication activity tracking' 
         }
       ]
     }
@@ -603,6 +576,53 @@ const ModernDropdownMenu: React.FC = () => {
             SXP
           </Typography>
         </Box>
+
+        {/* User Info & Logout */}
+        {user && (
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 2,
+            mr: 2
+          }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1,
+              px: 2,
+              py: 1,
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.2)'
+            }}>
+              <PersonIcon sx={{ 
+                color: colors.navigation.text,
+                fontSize: '18px'
+              }} />
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: colors.navigation.text,
+                  fontWeight: 500
+                }}
+              >
+                {user.name}
+              </Typography>
+            </Box>
+            <IconButton
+              onClick={logout}
+              sx={{
+                color: colors.navigation.text,
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                }
+              }}
+              title="Sign Out"
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Box>
+        )}
 
         {/* Desktop Menu */}
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
